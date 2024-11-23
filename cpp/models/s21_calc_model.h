@@ -10,6 +10,7 @@
 #include <string>
 #include <vector>
 
+extern "C" {
 namespace s21 {
 
 class CalcModel {
@@ -73,5 +74,6 @@ class CalcModel {
 };
 
 }  // namespace s21
+}
 
 #endif  // SRC_CALC_MODEL_H_

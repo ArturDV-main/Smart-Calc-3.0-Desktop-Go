@@ -29,9 +29,13 @@ else
 	OPEN = ./$(BUILD_DIR)/$(APPLICATION)
 endif
 
+.PHONY: clean
 all: tests
 
-.PHONY: clean
+# Dinamic lib
+lib:
+	g++ -dynamiclib -o libmylib.dylib mylib.cpp
+
 clean:
 	rm -rf $(BUILD_DIR) report $(shell find $(GT_DIRS) -type f -name "*.o")
 
@@ -55,12 +59,8 @@ tests: clean $(GT_OBJS)
 	$(CXX) $(CPP_STD) $(GT_OBJS) $(GT_FLAGS) $(CXXFLAGS) -o $(BUILD_DIR)/gtest.out $(GCOVFLAGS)
 	./$(BUILD_DIR)/gtest.out
 
-tests_gcov: clean $(GT_OBJS)
-	mkdir -p $(BUILD_DIR)
-	$(CXX) $(CPP_STD) $(GT_OBJS) $(GT_FLAGS) $(CXXFLAGS) $(GCOVFLAGS) -o $(BUILD_DIR)/gtest.out
-	./$(BUILD_DIR)/gtest.out
-
-gcov_report: clean tests_gcov
+# Coverage report create
+gcov_report: clean tests
 ifeq ($(OS), Darwin)
 	cd $(BUILD_DIR) && lcov --ignore-errors mismatch --ignore-errors inconsistent -t "test"  -o test.info -c -d .
 else
@@ -76,6 +76,7 @@ $(BUILD_DIR)/%.cc.o: %.cc
 	mkdir -p $(dir $@)
 	$(CXX) $(CPP_STD) $(CXXFLAGS) -c $< -o $@ $(GCOVFLAGS)
 
+# Clang check and fix
 clang:
 	clang-format -style=file:./.clang-format -n $(SRCS) $(HEADERS)
 	clang-format -style=file:./.clang-format -i $(SRCS) $(HEADERS)
