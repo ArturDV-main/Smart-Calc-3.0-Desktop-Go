@@ -7,10 +7,12 @@ GT_FLAGS = -lgtest -lgtest_main -lm
 
 #  Project directories
 BUILD_DIR = ../build
-SRC_DIRS = ../cpp ..cpp/controllers ..cpp/models
-GT_DIRS = ../cpp/models ../cpp/google_tests
+SRC_DIRS = ./controllers ./models
+GT_DIRS = ./models ./google_tests
+
 #  Project sourses
-SRCS := $(shell find $(SRC_DIRS) -maxdepth 1 -name *.cc)
+SRCS := $(shell find $(SRC_DIRS)  -type f -name "*.cc")
+HEADERS := $(shell find $(SRC_DIRS)  -type f -name "*.h")
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
 #  Google test sourses
@@ -53,9 +55,14 @@ tests: clean $(GT_OBJS)
 	$(CXX) $(CPP_STD) $(GT_OBJS) $(GT_FLAGS) $(CXXFLAGS) -o $(BUILD_DIR)/gtest.out
 	./$(BUILD_DIR)/gtest.out
 
-gcov_report: clean tests
+tests_gcov: clean $(GT_OBJS)
+	mkdir -p $(BUILD_DIR)
+	$(CXX) $(CPP_STD) $(GT_OBJS) $(GT_FLAGS) $(CXXFLAGS) $(GCOVFLAGS) -o $(BUILD_DIR)/gtest.out
+	./$(BUILD_DIR)/gtest.out
+
+gcov_report: clean tests_gcov
 ifeq ($(OS), Darwin)
-	cd $(BUILD_DIR) && lcov --ignore-errors mismatch -t "test"  -o test.info -c -d .
+	cd $(BUILD_DIR) && lcov --ignore-errors mismatch --ignore-errors inconsistent -t "test"  -o test.info -c -d .
 else
 	cd $(BUILD_DIR) && lcov -t "test"  -o test.info -c -d .
 endif
@@ -63,22 +70,15 @@ endif
 	cd $(BUILD_DIR) && genhtml -o report test.info
 	open $(BUILD_DIR)/report/index.html
 
-#  SmartCallc2.0 application
-apple:
-	mkdir -p $(BUILD_DIR)
-	cd $(BUILD_DIR) && qmake CONFIG+=qtquickcompiler ../src/s21_view_qt/SmartCalc2_0.pro && make
-
 # Build step for C++ source
 $(BUILD_DIR)/%.cc.o: %.cc
+	echo ***build $(BUILD_DIR)/%.cc.o: %.cc
 	mkdir -p $(dir $@)
-	$(CXX) $(CPP_STD) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CPP_STD) $(CXXFLAGS) -c $< -o $@ $(GCOVFLAGS)
 
 clang:
-	clang-format -style=file:materials/linters/.clang-format -n src/*.cc src/google_tests/*.cc src/*h src/s21_view_qt/*.cc src/s21_view_qt/*.h
-	clang-format -style=file:materials/linters/.clang-format -i src/*.cc src/google_tests/*.cc src/*h src/s21_view_qt/*.cc src/s21_view_qt/*.h
-
-open: all
-	$(OPEN)
+	clang-format -style=file:./.clang-format -n $(SRCS) $(HEADERS)
+	clang-format -style=file:./.clang-format -i $(SRCS) $(HEADERS)
 
 leak:
 ifeq ($(OS), Darwin)

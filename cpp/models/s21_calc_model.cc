@@ -6,14 +6,15 @@ CalcModel::CalcModel() {}
 
 CalcModel::~CalcModel() {}
 
-void CalcModel::StartCalc(const std::string &src_str, double X_num) {
+void CalcModel::StartCalc(const std::string& src_str, double X_num) {
   CleanStacks();
   setlocale(LC_NUMERIC, "C");
   if (ValidationEqual(src_str)) {
     try {
       result_ = Calc(src_str, X_num);
-      if (std::isnan(result_)) PushError("error: undefined");
-    } catch (const std::exception &e) {
+      if (std::isnan(result_))
+        PushError("error: undefined");
+    } catch (const std::exception& e) {
       PushError(e.what());
     }
   } else {
@@ -34,7 +35,7 @@ void CalcModel::CalcCredit(std::array<double, 3> data) {
   credit_data_[pereplata] = credit_data_[itog] - data[summa];
 }
 
-bool CalcModel::ValidationEqual(const std::string &str) const noexcept {
+bool CalcModel::ValidationEqual(const std::string& str) const noexcept {
   bool valid(false);
   std::string tmp("+-/*M^@ABCDEFGH)(1234567890.eX");
   for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
@@ -65,7 +66,7 @@ void CalcModel::DifferenCalc(std::array<double, 3> data) {
   different_data_[pereplata] = different_data_[itog] - debt_sum * data[srok];
 }
 
-double CalcModel::Calc(const std::string &calc_src, double X_num) {
+double CalcModel::Calc(const std::string& calc_src, double X_num) {
   int position = 0;
   while (calc_src[position]) {  //  Главный цикл вычисления
     StackType st_buf =
@@ -117,13 +118,14 @@ double CalcModel::Calc(const std::string &calc_src, double X_num) {
   } else {
     PushError("numbers stack empty");
   }
-  if (!num_stack_.empty()) PushError("numbers stack invalid");
+  if (!num_stack_.empty())
+    PushError("numbers stack invalid");
   return result;
 }
 
 //  Парсер одной лексеммы
-CalcModel::StackType CalcModel::ParserUno(const std::string &calc_src,
-                                          int *position, double X_num) {
+CalcModel::StackType CalcModel::ParserUno(const std::string& calc_src,
+                                          int* position, double X_num) {
   StackType stack1{};
   int prio = PrioCheck(calc_src[*position]);
   if (prio) {
@@ -165,7 +167,7 @@ int CalcModel::PrioCheck(const char src_string) const noexcept {
 
 int CalcModel::PositionCounter(char src_string)
     const noexcept {  //  Подсчёт позиции операции строке приоритетов
-  const char *operators = ")+-/*M^@ABCDEFGH(";
+  const char* operators = ")+-/*M^@ABCDEFGH(";
   int counter{};
   while (operators[counter]) {
     if (operators[counter] == src_string) {
@@ -177,8 +179,8 @@ int CalcModel::PositionCounter(char src_string)
 }
 
 int CalcModel::BufferingNumber(
-    const char *src_string,
-    std::string &out) {  //  Сборка числа в строку, возвращает длинну числа
+    const char* src_string,
+    std::string& out) {  //  Сборка числа в строку, возвращает длинну числа
   int i = 0;
   while ((src_string[i] >= '0' && src_string[i] <= '9') ||
          src_string[i] == '.' || src_string[i] == 'e') {
@@ -195,23 +197,27 @@ int CalcModel::BufferingNumber(
 int CalcModel::BracketFinder() {
   int finded = 0;
   if (!oper_stack_.empty())
-    if (oper_stack_.top().oper_val == '(') finded = 1;
+    if (oper_stack_.top().oper_val == '(')
+      finded = 1;
   return finded;
 }
 
-int CalcModel::UnarCheck(char check, const std::string &calc_str,
+int CalcModel::UnarCheck(char check, const std::string& calc_str,
                          int position) {
   int unar_minus_find{};
-  if ((check == '-' || check == '+') && !position) unar_minus_find = 1;
+  if ((check == '-' || check == '+') && !position)
+    unar_minus_find = 1;
   if ((check == '-' || check == '+') && position > 0)
-    if (calc_str[position - 1] == '(') unar_minus_find = 1;
+    if (calc_str[position - 1] == '(')
+      unar_minus_find = 1;
   return unar_minus_find;
 }
 
 double CalcModel::MathOperations() {
   double buf_num = 0.0;
   if (oper_stack_.top().prio < 4) {
-    if (num_stack_.size() < 2) PushError("Math err, nums empty");
+    if (num_stack_.size() < 2)
+      PushError("Math err, nums empty");
     double second = num_stack_.top();
     num_stack_.pop();
     double first = num_stack_.top();
@@ -220,7 +226,8 @@ double CalcModel::MathOperations() {
     oper_stack_.pop();
     buf_num = SimpleMath(second, first, operat);
   } else if (oper_stack_.top().prio < 5) {
-    if (num_stack_.empty()) PushError("Math err, expression");
+    if (num_stack_.empty())
+      PushError("Math err, expression");
     buf_num = num_stack_.top();
     num_stack_.pop();
     char oper_buf = oper_stack_.top().oper_val;
@@ -245,8 +252,10 @@ double CalcModel::SimpleMath(double second_num, double first_num,
       out_num = first_num * second_num;
       break;
     case '/':
-      if (std::abs(second_num - 0.0) < epsilon) PushError("Error: /0");
-      if (std::abs(first_num - 0.0) < epsilon) PushError("Error: 0/");
+      if (std::abs(second_num - 0.0) < epsilon)
+        PushError("Error: /0");
+      if (std::abs(first_num - 0.0) < epsilon)
+        PushError("Error: 0/");
       out_num = first_num / second_num;
       break;
     case '^':
@@ -272,26 +281,31 @@ double CalcModel::TrigonCalc(double x, char operation) {
       buf_num = tan(x);
       break;
     case ACOS:
-      if (x < -1 || x > 1) PushError("error: interval [-1,+1]");
+      if (x < -1 || x > 1)
+        PushError("error: interval [-1,+1]");
       buf_num = acos(x);
       break;
     case ASIN:
-      if (x < -1 || x > 1) PushError("error: interval [-1,+1]");
+      if (x < -1 || x > 1)
+        PushError("error: interval [-1,+1]");
       buf_num = asin(x);
       break;
     case ATAN:
       buf_num = atan(x);
       break;
     case SQRT:
-      if (x < -1 || x > 1) PushError("error: interval > 1");
+      if (x < -1 || x > 1)
+        PushError("error: interval > 1");
       buf_num = sqrt(x);
       break;
     case LN:
-      if (x < 1) PushError("error: interval > 1");
+      if (x < 1)
+        PushError("error: interval > 1");
       buf_num = log(x);
       break;
     case LOG:
-      if (x < 1) PushError("error: interval > 1");
+      if (x < 1)
+        PushError("error: interval > 1");
       buf_num = log10(x);
       break;
   }

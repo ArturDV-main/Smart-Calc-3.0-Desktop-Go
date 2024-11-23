@@ -9,9 +9,9 @@ namespace s21 {
 
 class CalcController {
  public:
-  CalcController(s21::CalcModel *m) : calc_model(m){};
+  CalcController(s21::CalcModel* m) : calc_model(m) {};
   void Reset() noexcept { calc_model->Reset(); }
-  void StartCalc(const std::string &a, const double x);
+  void StartCalc(const std::string& a, const double x);
   void CalcCredit(std::array<double, 3> data) { calc_model->CalcCredit(data); }
   void DifferenCalc(std::array<double, 3> data) {
     calc_model->DifferenCalc(data);
@@ -25,7 +25,7 @@ class CalcController {
   }
 
  private:
-  s21::CalcModel *calc_model;
+  s21::CalcModel* calc_model;
 };
 
 }  // namespace s21

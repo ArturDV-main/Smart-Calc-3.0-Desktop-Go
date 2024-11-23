@@ -43,8 +43,8 @@ class CalcModel {
     different_data_.clear();
     credit_data_ = {0, 0, 0};
   }
-  bool ValidationEqual(const std::string &str) const noexcept;
-  void StartCalc(const std::string &src_str, double X_num);
+  bool ValidationEqual(const std::string& str) const noexcept;
+  void StartCalc(const std::string& src_str, double X_num);
   void CalcCredit(std::array<double, 3> data);
   void DifferenCalc(std::array<double, 3> data);
   double GetData() const noexcept { return result_; }
@@ -58,13 +58,13 @@ class CalcModel {
   std::array<double, 3> credit_data_;
   std::vector<double> different_data_;
   //  Metods
-  double Calc(const std::string &calc_src, double X_num);
-  StackType ParserUno(const std::string &calc_src, int *position, double X_num);
+  double Calc(const std::string& calc_src, double X_num);
+  StackType ParserUno(const std::string& calc_src, int* position, double X_num);
   int PrioCheck(char src_string) const noexcept;
   int PositionCounter(char src_string) const noexcept;
-  int BufferingNumber(const char *src_string, std::string &out);
+  int BufferingNumber(const char* src_string, std::string& out);
   int BracketFinder();
-  int UnarCheck(char check, const std::string &calc_str, int position);
+  int UnarCheck(char check, const std::string& calc_str, int position);
   double MathOperations();
   void CleanStacks();
   void PushError(std::string error);
