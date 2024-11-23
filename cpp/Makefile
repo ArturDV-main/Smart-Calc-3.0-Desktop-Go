@@ -6,7 +6,7 @@ GCOVFLAGS = --coverage
 GT_FLAGS = -lgtest -lgtest_main -lm
 
 #  Project directories
-BUILD_DIR = build
+BUILD_DIR = ../build
 SRC_DIRS = ../cpp ..cpp/controllers ..cpp/models
 GT_DIRS = ../cpp/models ../cpp/google_tests
 #  Project sourses
@@ -31,7 +31,7 @@ all: tests
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR) test.info report src/s21_view_qt/.qmake.stash \
+	rm -rf $(BUILD_DIR) report $(SRC_DIRS)/*.o
 
 dvi:
 	open dvi.html
