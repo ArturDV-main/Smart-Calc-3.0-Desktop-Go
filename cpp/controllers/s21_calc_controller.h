@@ -3,7 +3,7 @@
 #include <array>
 #include <stdexcept>
 
-#include "s21_calc_model.h"
+#include "../models/s21_calc_model.h"
 
 namespace s21 {
 

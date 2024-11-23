@@ -1,6 +1,6 @@
 #include <iostream>
 
-#include "../s21_calc_model.h"
+#include "../models/s21_calc_model.h"
 #include "gtest/gtest.h"
 
 TEST(CalcTest, GetDataCalc) {

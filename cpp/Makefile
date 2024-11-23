@@ -1,19 +1,20 @@
-CXX = gcc
+CXX = g++
 CPP_STD = -std=c++17
 TARGET = SmartCalc2_0
-CXXFLAGS = -lm -g -Wall -Wextra -Werror -lstdc++ --coverage
+CXXFLAGS = -lm -g -Wall -Wextra -Werror
+GCOVFLAGS = --coverage
 GT_FLAGS = -lgtest -lgtest_main -lm
 
 #  Project directories
 BUILD_DIR = build
-SRC_DIRS = src src/s21_view_qt
-GT_DIRS = src src/google_tests
+SRC_DIRS = ../cpp ..cpp/controllers ..cpp/models
+GT_DIRS = ../cpp/models ../cpp/google_tests
 #  Project sourses
 SRCS := $(shell find $(SRC_DIRS) -maxdepth 1 -name *.cc)
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
 #  Google test sourses
-GT_SRCS := $(shell find $(GT_DIRS) -maxdepth 1 -name s21_*.cc)
+GT_SRCS := $(shell find $(GT_DIRS) -type f -name "*.cc")
 GT_OBJS := $(GT_SRCS:%=$(BUILD_DIR)/%.o)
 
 OS := $(shell uname -s)
@@ -26,27 +27,11 @@ else
 	OPEN = ./$(BUILD_DIR)/$(APPLICATION)
 endif
 
-all: apple
-
-install: apple
-ifeq ($(OS), Darwin)
-	cp -r build/$(APPLICATION) ~/Desktop/
-else
-	mkdir -p SmartCalc
-	cp build/$(APPLICATION) ./SmartCalc/
-endif
-
-uninstall:
-ifeq ($(OS), Darwin)
-	rm -rf ~/Desktop/$(APPLICATION)
-else
-	rm -rf ./SmartCalc/
-endif
+all: tests
 
 .PHONY: clean
 clean:
 	rm -rf $(BUILD_DIR) test.info report src/s21_view_qt/.qmake.stash \
-	src/build-SmartCalc2_0-Desktop-Debug build-SmartCalc2_0-Desktop_x86_darwin_generic_mach_o_64bit-Debug
 
 dvi:
 	open dvi.html
