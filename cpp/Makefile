@@ -31,7 +31,7 @@ all: tests
 
 .PHONY: clean
 clean:
-	rm -rf $(BUILD_DIR) report $(SRC_DIRS)/*.o
+	rm -rf $(BUILD_DIR) report $(shell find $(GT_DIRS) -type f -name "*.o")
 
 dvi:
 	open dvi.html
