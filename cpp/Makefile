@@ -52,7 +52,7 @@ dist: all
 #  Google tests
 tests: clean $(GT_OBJS)
 	mkdir -p $(BUILD_DIR)
-	$(CXX) $(CPP_STD) $(GT_OBJS) $(GT_FLAGS) $(CXXFLAGS) -o $(BUILD_DIR)/gtest.out
+	$(CXX) $(CPP_STD) $(GT_OBJS) $(GT_FLAGS) $(CXXFLAGS) -o $(BUILD_DIR)/gtest.out $(GCOVFLAGS)
 	./$(BUILD_DIR)/gtest.out
 
 tests_gcov: clean $(GT_OBJS)
