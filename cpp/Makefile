@@ -1,6 +1,6 @@
 CXX = g++
 CPP_STD = -std=c++17
-TARGET = SmartCalc2_0
+TARGET = smart_calc
 CXXFLAGS = -lm -g -Wall -Wextra -Werror
 GCOVFLAGS = --coverage
 GT_FLAGS = -lgtest -lgtest_main -lm
@@ -33,8 +33,8 @@ endif
 all: tests
 
 # Dinamic lib
-lib:
-	g++ -dynamiclib -o libmylib.dylib mylib.cpp
+lib: $(OBJS)
+	g++ -dynamiclib -o $(BUILD_DIR)/$(TARGET).dylib $(OBJS) $(GCOVFLAGS)
 
 clean:
 	rm -rf $(BUILD_DIR) report $(shell find $(GT_DIRS) -type f -name "*.o")
