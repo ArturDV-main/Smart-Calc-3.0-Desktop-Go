@@ -6,6 +6,7 @@ GCOVFLAGS = --coverage
 GT_FLAGS = -lgtest -lgtest_main -lm
 
 #  Project directories
+LIB_DIR = ../libs
 BUILD_DIR = ../build
 SRC_DIRS = ./controllers ./models
 GT_DIRS = ./models ./google_tests
@@ -30,11 +31,12 @@ else
 endif
 
 .PHONY: clean
-all: tests
+all: lib tests
 
-# Dinamic lib
+# Dinamic lib 	$(CXX) $(CPP_STD) $(CXXFLAGS) -shared -o $(LIB_DIR)/$(TARGET).so $(OBJS) $(GCOVFLAGS)
 lib: $(OBJS)
-	g++ -dynamiclib -o $(BUILD_DIR)/$(TARGET).dylib $(OBJS) $(GCOVFLAGS)
+	mkdir -p $(LIB_DIR)
+	$(CXX) $(CPP_STD) $(CXXFLAGS) -dynamiclib -o $(LIB_DIR)/lib$(TARGET).dylib $(OBJS) $(GCOVFLAGS)
 
 clean:
 	rm -rf $(BUILD_DIR) report $(shell find $(GT_DIRS) -type f -name "*.o")
@@ -72,9 +74,8 @@ endif
 
 # Build step for C++ source
 $(BUILD_DIR)/%.cc.o: %.cc
-	echo ***build $(BUILD_DIR)/%.cc.o: %.cc
 	mkdir -p $(dir $@)
-	$(CXX) $(CPP_STD) $(CXXFLAGS) -c $< -o $@ $(GCOVFLAGS)
+	$(CXX) $(CPP_STD) $(CXXFLAGS) -fPIC -c $< -o $@ $(GCOVFLAGS)
 
 # Clang check and fix
 clang:

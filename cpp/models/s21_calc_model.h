@@ -10,7 +10,9 @@
 #include <string>
 #include <vector>
 
+#ifdef __cplusplus
 extern "C" {
+#endif
 namespace s21 {
 
 class CalcModel {
@@ -74,6 +76,8 @@ class CalcModel {
 };
 
 }  // namespace s21
+#ifdef __cplusplus
 }
+#endif
 
 #endif  // SRC_CALC_MODEL_H_
