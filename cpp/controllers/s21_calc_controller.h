@@ -5,6 +5,7 @@
 
 #include "../models/s21_calc_model.h"
 
+extern "C" {
 namespace s21 {
 
 class CalcController {
@@ -29,5 +30,6 @@ class CalcController {
 };
 
 }  // namespace s21
+}
 
 #endif  //  SRC_S21_CALC_CONTROLLER_H_

@@ -78,8 +78,8 @@ $(BUILD_DIR)/%.cc.o: %.cc
 
 # Clang check and fix
 clang:
-	clang-format -style=file:./.clang-format -n $(SRCS) $(HEADERS)
-	clang-format -style=file:./.clang-format -i $(SRCS) $(HEADERS)
+	clang-format -style=file:./.clang-format -n $(SRCS) $(HEADERS) $(GT_SRCS)
+	clang-format -style=file:./.clang-format -i $(SRCS) $(HEADERS) $(GT_SRCS)
 
 leak:
 ifeq ($(OS), Darwin)
