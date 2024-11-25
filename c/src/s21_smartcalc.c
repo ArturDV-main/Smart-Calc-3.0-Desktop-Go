@@ -1,7 +1,5 @@
 #include "s21_smartcalc.h"
 
-extern "C" {
-
 int validator(const char *str) {
   int errcode = 0;
   int operand = 0, i = 0;
@@ -313,6 +311,4 @@ double Start_calc(const char *src, double X_num) {
   else
     printf("Ошибка");
   return result;
-}
-
 }

@@ -1,8 +1,7 @@
 CXX = gcc
-CPP_STD = -std=c++17
+CPP_STD = -std=c11
 TARGET = smart_calc
 CXXFLAGS = -lm -g -Wall -Wextra -Werror
-GCOVFLAGS = --coverage
 GT_FLAGS = -lgtest -lgtest_main -lm
 
 #  Project directories
@@ -12,12 +11,12 @@ SRC_DIRS = ./src
 GT_DIRS = ./google_tests
 
 #  Project sourses
-SRCS := $(shell find $(SRC_DIRS)  -type f -name "*.cc")
+SRCS := $(shell find $(SRC_DIRS)  -type f -name "*.c")
 HEADERS := $(shell find $(SRC_DIRS)  -type f -name "*.h")
 OBJS := $(SRCS:%=$(BUILD_DIR)/%.o)
 
 #  Google test sourses
-GT_SRCS := $(shell find $(GT_DIRS) -type f -name "*.cc")
+GT_SRCS := $(shell find $(GT_DIRS) -type f -name "*.c")
 GT_OBJS := $(GT_SRCS:%=$(BUILD_DIR)/%.o)
 
 OS := $(shell uname -s)
@@ -33,7 +32,7 @@ endif
 .PHONY: clean
 all: lib
 
-# Dinamic lib 	$(CXX) $(CPP_STD) $(CXXFLAGS) -shared -o $(LIB_DIR)/$(TARGET).so $(OBJS) $(GCOVFLAGS)
+# Dinamic lib
 lib: $(OBJS)
 	mkdir -p $(LIB_DIR)
 ifeq ($(OS), Darwin)
@@ -78,7 +77,8 @@ endif
 	open $(BUILD_DIR)/report/index.html
 
 # Build step for C++ source
-$(BUILD_DIR)/%.cc.o: %.cc
+$(BUILD_DIR)/%.c.o: %.c
+	@echo "build o"
 	mkdir -p $(dir $@)
 	$(CXX) $(CPP_STD) $(CXXFLAGS) -fPIC -c $< -o $@ $(GCOVFLAGS)
 
