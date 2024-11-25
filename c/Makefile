@@ -1,5 +1,5 @@
 CXX = gcc
-CPP_STD = -std=c++17 -lstdc++
+CPP_STD = -std=c++17
 TARGET = smart_calc
 CXXFLAGS = -lm -g -Wall -Wextra -Werror
 GCOVFLAGS = --coverage
@@ -8,8 +8,8 @@ GT_FLAGS = -lgtest -lgtest_main -lm
 #  Project directories
 LIB_DIR = ../libs
 BUILD_DIR = ../build
-SRC_DIRS = ./controllers ./models
-GT_DIRS = ./models ./google_tests
+SRC_DIRS = ./src
+GT_DIRS = ./google_tests
 
 #  Project sourses
 SRCS := $(shell find $(SRC_DIRS)  -type f -name "*.cc")
@@ -31,7 +31,7 @@ else
 endif
 
 .PHONY: clean
-all: lib tests
+all: lib
 
 # Dinamic lib 	$(CXX) $(CPP_STD) $(CXXFLAGS) -shared -o $(LIB_DIR)/$(TARGET).so $(OBJS) $(GCOVFLAGS)
 lib: $(OBJS)
@@ -44,8 +44,8 @@ else
 endif
 
 clean:
-	rm -rf $(BUILD_DIR) report $(shell find $(GT_DIRS) -type f -name "*.o")
-
+	rm -rf $(BUILD_DIR) report
+	
 dvi:
 	open dvi.html
 

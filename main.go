@@ -2,17 +2,15 @@ package main
 
 /*
    #cgo CXXFLAGS: -std=c++17
-   #cgo LDFLAGS: -L./lib  -lsmart_calc
-   #include "cpp/controllers/s21_calc_controller.h"
-   s21::CalcController controller;
-   void StartCalc(const std::string& a, const double x) {
-      controller.StartCalc(a, x);
-   }
-   double GetResult() const noexcept { return controller.GetResult(); }
+   #cgo LDFLAGS: -L./libs  -lsmart_calc
+   #include "c/src/s21_smartcalc.h"
 */
 import "C"
+import "fmt"
 
 func main() {
-	C.StartCalc("2+2", 0)
-	a := C.GetResult()
+	str := "5+5"
+	cstr := C.CString(str)
+	c := C.Start_calc(cstr, 0)
+	fmt.Println("hello", c)
 }
