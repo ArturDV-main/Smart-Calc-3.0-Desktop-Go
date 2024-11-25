@@ -1,8 +1,7 @@
 package main
 
 /*
-   #cgo CXXFLAGS: -std=c++17
-   #cgo LDFLAGS: -L./libs  -lsmart_calc -lstdc++
+   #cgo LDFLAGS: -L./libs  -lsmart_calc
    #include "c/src/s21_smartcalc.h"
 */
 import "C"
