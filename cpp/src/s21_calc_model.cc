@@ -1,4 +1,4 @@
-#include "s21_calc_model.h"
+#include "./s21_calc_model.h"
 
 namespace s21 {
 

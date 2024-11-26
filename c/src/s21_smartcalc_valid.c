@@ -1,4 +1,6 @@
 #include "s21_smartcalc.h"
+#include <string.h>
+#include <stdlib.h>
 
 int in_line_start(const char *str, int str_len) {
   int in_start = FALSE;

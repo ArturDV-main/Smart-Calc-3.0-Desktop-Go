@@ -1,5 +1,5 @@
-CXX = gcc
-CPP_STD = -std=c++17 -lstdc++
+CXX = g++
+CPP_STD = -std=c++17
 TARGET = smart_calc
 CXXFLAGS = -lm -g -Wall -Wextra -Werror
 GCOVFLAGS = --coverage
@@ -8,8 +8,8 @@ GT_FLAGS = -lgtest -lgtest_main -lm
 #  Project directories
 LIB_DIR = ../libs
 BUILD_DIR = ../build
-SRC_DIRS = ./controllers ./models
-GT_DIRS = ./models ./google_tests
+SRC_DIRS = ./src
+GT_DIRS = ./src ./google_tests
 
 #  Project sourses
 SRCS := $(shell find $(SRC_DIRS)  -type f -name "*.cc")
@@ -31,16 +31,18 @@ else
 endif
 
 .PHONY: clean
-all: lib tests
+all: lib
 
 # Dinamic lib 	$(CXX) $(CPP_STD) $(CXXFLAGS) -shared -o $(LIB_DIR)/$(TARGET).so $(OBJS) $(GCOVFLAGS)
+
+
 lib: $(OBJS)
-	mkdir -p $(LIB_DIR)
+	mkdir -p $(BUILD_DIR)
 ifeq ($(OS), Darwin)
-	$(CXX) $(CPP_STD) $(CXXFLAGS) -dynamiclib -o $(LIB_DIR)/lib$(TARGET).dylib $(OBJS) $(GCOVFLAGS)
+	$(CXX) $(CPP_STD) $(CXXFLAGS) -dynamiclib -o $(LIB_DIR)/lib$(TARGET).dylib $(OBJS)
 else
-	@echo "linux process"
-	$(CXX) $(CPP_STD) $(CXXFLAGS) -shared -o $(LIB_DIR)/lib$(TARGET).so $(OBJS) $(GCOVFLAGS)
+	cp ./src/* ./$(BUILD_DIR)
+	cd $(BUILD_DIR) && g++ -std=c++17 -shared -fPIC -o ./libsmart_calc.so ./*.cc
 endif
 
 clean:

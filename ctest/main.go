@@ -2,7 +2,7 @@ package main
 
 /*
 #cgo linux LDFLAGS: -L. -ladd
-#include "add.h"
+#include "./add.h"
 */
 import "C"
 import (

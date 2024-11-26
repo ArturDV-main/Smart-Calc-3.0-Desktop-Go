@@ -1,11 +1,12 @@
 #include <cstdio>
-#include "add.h"
+#include "./add.h"
 #include <vector>
+#include <math.h>
 
 int add(int a, int b) {
     std::vector<int> v;
     // Add two more integers to vector
     v.push_back(a);
     v.push_back(b);
-    return v[0] + v[1];
+    return std::sin(v[0] + v[1]);
 }

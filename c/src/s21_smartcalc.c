@@ -1,5 +1,12 @@
 #include "s21_smartcalc.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <math.h>
+
+#define OPERATIONS  ")+-/*M^@ABCDEFGH("
+
 int validator(const char *str) {
   int errcode = 0;
   int operand = 0, i = 0;

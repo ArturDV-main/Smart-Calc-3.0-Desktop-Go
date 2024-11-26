@@ -1,19 +1,6 @@
 #ifndef SRC_S21_SMARTCALC_H_
 #define SRC_S21_SMARTCALC_H_
 
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
-#define OPERATIONS  ")+-/*M^@ABCDEFGH("
-
-typedef struct Node_stack {
-  double val_dub;
-  int prio;
-  struct Node_stack *next;
-} stack_type;
-
 enum truefalse {
   FALSE,
   TRUE,
@@ -29,13 +16,18 @@ enum truefalse {
   LOG = 'H'
 };
 
+typedef struct Node_stack {
+  double val_dub;
+  int prio;
+  struct Node_stack *next;
+} stack_type;
+
 int validator(const char *str);
 double pop_val(stack_type **stack);
 stack_type *push_sta(stack_type *plist, double val_dub, int prio);
 int position_counter(char src_string);
 int prio_check(char src_string);
 stack_type parser_uno(const char *calculation_src, int *position, double X);
-void print_from_node(stack_type *stack1);
 void destroy_node(stack_type *stack1);
 stack_type *del_point(stack_type *stack1);
 double simple_math(double second_num, double first_num, char operation);

@@ -1,11 +1,11 @@
 CXX = gcc
-CPP_STD = -std=c11
+CPP_STD = -std=c17
 TARGET = smart_calc
 CXXFLAGS = -lm -g -Wall -Wextra -Werror
 GT_FLAGS = -lgtest -lgtest_main -lm
 
 #  Project directories
-LIB_DIR = ../libs
+LIB_DIR = ../cmd
 BUILD_DIR = ../build
 SRC_DIRS = ./src
 GT_DIRS = ./google_tests
