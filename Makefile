@@ -1,7 +1,8 @@
 all:
-	cd ./cpp && make
-	cp ./cmd/* ./build/
-	cd ./build && go build . && ./smartcalc
+	# cd ./cpp && make
+	cd ./pkg/calcadapter && go test .
+	cd ./cmd/smart_calculator && go build . && ./smart_calculator
+
 
 clean:
 	rm -rf ./build/*

@@ -41,8 +41,8 @@ lib: $(OBJS)
 ifeq ($(OS), Darwin)
 	$(CXX) $(CPP_STD) $(CXXFLAGS) -dynamiclib -o $(LIB_DIR)/lib$(TARGET).dylib $(OBJS)
 else
-	cp ./src/* ./$(BUILD_DIR)
-	cd $(BUILD_DIR) && g++ -std=c++17 -shared -fPIC -o ./libsmart_calc.so ./*.cc
+	cp ./src/* ../pkg/calcadapter/
+	cd ../pkg/calcadapter/ && g++ -std=c++17 -shared -fPIC -o ./libsmart_calc.so ./*.cc
 endif
 
 clean:
