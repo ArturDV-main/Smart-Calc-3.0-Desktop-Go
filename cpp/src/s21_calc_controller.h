@@ -5,7 +5,12 @@
 extern "C" {
 #endif
 
-  double StartCalc(const char* a, const double x);
+  typedef struct {
+    int err;
+    const char* errors;
+    double result;
+  } Response;
+  Response StartCalc(const char* a, const double x);
 
 #ifdef __cplusplus
 }

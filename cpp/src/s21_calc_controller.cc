@@ -5,17 +5,20 @@
 extern "C" {
 #endif
 
-double StartCalc(const char* a, const double x) {
+Response StartCalc(const char* a, const double x) {
 
 s21::CalcModel calc_model;
   std::string s(a);
-  double result = 0;
+  Response result;
   try {
     calc_model.StartCalc(s, x);
   } catch (const std::exception& e) {
+    result.err = 1;
+    
     return result;
   }
-  result = calc_model.GetData();
+  result.result = calc_model.GetData();
+
   return result;
 }
 
