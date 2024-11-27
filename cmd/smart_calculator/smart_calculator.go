@@ -11,4 +11,5 @@ func main() {
 	if err != nil || got != 15 {
 		fmt.Printf("5+5*2 = %f; want 15 ", got)
 	}
+	fmt.Println("hello", got)
 }

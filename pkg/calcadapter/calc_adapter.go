@@ -16,8 +16,7 @@ func Calculate(str string) (float64, error) {
 	if c.err == 1 {
 		log.Println("error")
 		return 0, errors.New("error")
-	} else {
-		log.Println("hello", c.result)
 	}
+
 	return float64(c.result), nil
 }
