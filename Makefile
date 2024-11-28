@@ -1,5 +1,5 @@
 all:
-	wails build -tags webkit2_41
+	wails build
 	./build/bin/smartcalc
 test:
 	cd ./cpp && make

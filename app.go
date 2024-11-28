@@ -25,9 +25,8 @@ func (a *App) startup(ctx context.Context) {
 // Greet returns a greeting for the given name
 func (a *App) Greet(expression string) string {
 	got, err := calcadapter.Calculate(expression)
-	if err != nil || got != 15 {
+	if err != nil {
 		return fmt.Sprintf("Calculate error:  %s, %s", err.Error(), expression)
 	}
-
-	return fmt.Sprintf("Hello %s, It's %f", expression, got)
+	return fmt.Sprintln(got)
 }
