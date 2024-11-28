@@ -10,13 +10,14 @@ void CalcModel::StartCalc(const std::string& src_str, double X_num) {
   CleanStacks();
   setlocale(LC_NUMERIC, "C");
   if (ValidationEqual(src_str)) {
-    try {
+    // try {
       result_ = Calc(src_str, X_num);
-      if (std::isnan(result_))
-        PushError("error: undefined");
-    } catch (const std::exception& e) {
-      PushError(e.what());
-    }
+      
+    //   if (std::isnan(result_))
+    //     PushError("error: undefined");
+    // } catch (const std::exception& e) {
+    //   PushError(e.what());
+    // }
   } else {
     throw std::invalid_argument("expression error");
   }

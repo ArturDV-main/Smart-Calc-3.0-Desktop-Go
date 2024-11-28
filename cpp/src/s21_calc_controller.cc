@@ -5,9 +5,10 @@
 extern "C" {
 #endif
 
-Response StartCalc(const char* a, const double x) {
+Response StartCalc(const char *a, const double x) {
 
 s21::CalcModel calc_model;
+  
   std::string s(a);
   Response result;
   try {

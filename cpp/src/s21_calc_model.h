@@ -31,6 +31,12 @@ class CalcModel {
   enum ForData { summa = 0, srok, percent };
   enum ForItog { itog = 0, pereplata, monthly };
 
+  typedef struct Resp {
+    int err;
+    const char* errors;
+    double result;
+  } Response;
+
   struct StackType {
     double val_dub{};
     char oper_val{};

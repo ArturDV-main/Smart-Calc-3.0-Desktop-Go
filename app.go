@@ -28,5 +28,6 @@ func (a *App) Greet(expression string) string {
 	if err != nil || got != 15 {
 		return fmt.Sprintf("Calculate error:  %s, %s", err.Error(), expression)
 	}
+
 	return fmt.Sprintf("Hello %s, It's %f", expression, got)
 }
