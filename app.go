@@ -26,7 +26,7 @@ func (a *App) startup(ctx context.Context) {
 func (a *App) Greet(expression string) string {
 	got, err := calcadapter.Calculate(expression)
 	if err != nil {
-		return fmt.Sprintf("Calculate error:  %s, %s", err.Error(), expression)
+		return fmt.Sprintf("Calculate error:  %s", err.Error())
 	}
-	return fmt.Sprintln(got)
+	return fmt.Sprintln("Got: ", got)
 }

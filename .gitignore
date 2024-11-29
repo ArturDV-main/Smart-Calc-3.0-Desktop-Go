@@ -1,3 +1,4 @@
-build/bin
+build
 node_modules
 frontend/dist
+build/src/s21_calc_controller.cc.gcno
