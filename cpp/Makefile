@@ -39,10 +39,12 @@ all: lib
 lib: $(OBJS)
 	mkdir -p $(BUILD_DIR)
 ifeq ($(OS), Darwin)
-	$(CXX) $(CPP_STD) $(CXXFLAGS) -dynamiclib -o $(LIB_DIR)/lib$(TARGET).dylib $(OBJS)
-else
 	cp ./src/* ../pkg/calcadapter/
-	cd ../pkg/calcadapter/ && g++ -std=c++17 -shared -fPIC -o ./libsmart_calc.so ./*.cc
+	cd ../pkg/calcadapter/ && g++ -std=c++17 -dynamiclib -fPIC -o libsmart_calc.dylib ./*.cc
+	cd ../pkg/calcadapter/ && cp ./libsmart_calc.dylib ../
+else
+	cd ../pkg/calcadapter/ && cp ./src/* ../pkg/calcadapter/
+	cd ../pkg/calcadapter/ && g++ -std=c++17 -shared -fPIC -o libsmart_calc.so ./*.cc
 endif
 
 clean:

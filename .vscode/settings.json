@@ -58,7 +58,8 @@
         "thread": "cpp",
         "cinttypes": "cpp",
         "typeinfo": "cpp",
-        "variant": "cpp"
+        "variant": "cpp",
+        "stack": "cpp"
     },
     "makefile.configureOnOpen": false
 }
