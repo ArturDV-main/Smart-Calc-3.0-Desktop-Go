@@ -1,6 +1,5 @@
 all:
 	wails build
-	cp ../pkg/calcadapter/lib
 	./build/bin/smartcalc
 
 test:
