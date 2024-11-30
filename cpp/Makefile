@@ -41,10 +41,11 @@ lib: $(OBJS)
 ifeq ($(OS), Darwin)
 	cp ./src/* ../pkg/calcadapter/
 	cd ../pkg/calcadapter/ && g++ -std=c++17 -dynamiclib -fPIC -o libsmart_calc.dylib ./*.cc
-	cd ../pkg/calcadapter/ && cp ./libsmart_calc.dylib ../
+	cd ../pkg/calcadapter/ && cp ./libsmart_calc.dylib ../../
 else
 	cd ../pkg/calcadapter/ && cp ./src/* ../pkg/calcadapter/
 	cd ../pkg/calcadapter/ && g++ -std=c++17 -shared -fPIC -o libsmart_calc.so ./*.cc
+	cd ../pkg/calcadapter/ && cp ./libsmart_calc.so ../../
 endif
 
 clean:
