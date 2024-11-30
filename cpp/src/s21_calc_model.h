@@ -37,35 +37,40 @@ class CalcModel {
     double result;
   } Response;
 
-  typedef struct StackType {
-    double val_dub;
-    char oper_val;
-    int prio;
-  } Stack;
+  struct StackType {
+    double val_dub{};
+    char oper_val{};
+    int prio{};
+  };
 
  public:
   CalcModel();
   ~CalcModel();
-  void Reset();
-  bool ValidationEqual(const std::string& str);
+  void Reset() noexcept {
+    result_ = 0.0;
+    CleanStacks();
+    different_data_.clear();
+    credit_data_ = {0, 0, 0};
+  }
+  bool ValidationEqual(const std::string& str) const noexcept;
   void StartCalc(const std::string& src_str, double X_num);
   void CalcCredit(std::array<double, 3> data);
   void DifferenCalc(std::array<double, 3> data);
-  double GetData();
-  std::array<double, 3> GetCredit();
-  std::vector<double> GetDifferent();
+  double GetData() const noexcept { return result_; }
+  std::array<double, 3> GetCredit() const noexcept { return credit_data_; }
+  std::vector<double> GetDifferent() const noexcept { return different_data_; }
 
  private:
-  std::stack<Stack> oper_stack_{};
+  std::stack<StackType> oper_stack_{};
   std::stack<double> num_stack_{};
-  double result_;
+  double result_{};
   std::array<double, 3> credit_data_;
   std::vector<double> different_data_;
   //  Metods
   double Calc(const std::string& calc_src, double X_num);
-  Stack ParserUno(const std::string& calc_src, int* position, double X_num);
-  int PrioCheck(char src_string);
-  int PositionCounter(char src_string);
+  StackType ParserUno(const std::string& calc_src, int* position, double X_num);
+  int PrioCheck(char src_string) const noexcept;
+  int PositionCounter(char src_string) const noexcept;
   int BufferingNumber(const char* src_string, std::string& out);
   int BracketFinder();
   int UnarCheck(char check, const std::string& calc_str, int position);
@@ -74,7 +79,6 @@ class CalcModel {
   void PushError(std::string error);
   double SimpleMath(double second_num, double first_num, char operation);
   double TrigonCalc(double x, char operation);
-  CalcModel::StackType St(double val_dub, char oper_val, int prio);
 };
 
 }  // namespace s21

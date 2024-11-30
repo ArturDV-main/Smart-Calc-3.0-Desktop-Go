@@ -22,19 +22,8 @@ GT_OBJS := $(GT_SRCS:%=$(BUILD_DIR)/%.o)
 
 OS := $(shell uname -s)
 
-ifeq ($(OS), Darwin)
-	APPLICATION := SmartCalc2_0.app
-	OPEN = open $(BUILD_DIR)/$(APPLICATION)
-else
-	APPLICATION := SmartCalc2_0
-	OPEN = ./$(BUILD_DIR)/$(APPLICATION)
-endif
-
 .PHONY: clean
 all: lib
-
-# Dinamic lib 	$(CXX) $(CPP_STD) $(CXXFLAGS) -shared -o $(LIB_DIR)/$(TARGET).so $(OBJS) $(GCOVFLAGS)
-
 
 lib:
 	mkdir -p $(BUILD_DIR)

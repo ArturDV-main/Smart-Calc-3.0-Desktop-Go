@@ -1,5 +1,4 @@
 #include "./s21_calc_model.h"
-#include "s21_calc_model.h"
 
 namespace s21 {
 
@@ -7,33 +6,13 @@ CalcModel::CalcModel() {}
 
 CalcModel::~CalcModel() {}
 
-void CalcModel::Reset() {
-  result_ = 0.0;
-  CleanStacks();
-  different_data_.clear();
-  credit_data_[0] = 0.0;
-  credit_data_[1] = 0.0;
-  credit_data_[2] = 0.0;
-}
-
-double CalcModel::GetData() {
-  return result_;
-}
-
-std::array<double, 3> CalcModel::GetCredit() {
-  return credit_data_;
-}
-std::vector<double> CalcModel::GetDifferent() {
-  return different_data_;
-}
-
 void CalcModel::StartCalc(const std::string& src_str, double X_num) {
   CleanStacks();
   setlocale(LC_NUMERIC, "C");
   if (ValidationEqual(src_str)) {
     try {
       result_ = Calc(src_str, X_num);
-
+      
       if (std::isnan(result_))
         PushError("error: undefined");
     } catch (const std::exception& e) {
@@ -57,7 +36,7 @@ void CalcModel::CalcCredit(std::array<double, 3> data) {
   credit_data_[pereplata] = credit_data_[itog] - data[summa];
 }
 
-bool CalcModel::ValidationEqual(const std::string& str) {
+bool CalcModel::ValidationEqual(const std::string& str) const noexcept {
   bool valid(false);
   std::string tmp("+-/*M^@ABCDEFGH)(1234567890.eX");
   for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
@@ -88,18 +67,10 @@ void CalcModel::DifferenCalc(std::array<double, 3> data) {
   different_data_[pereplata] = different_data_[itog] - debt_sum * data[srok];
 }
 
-CalcModel::StackType CalcModel::St(double val_dub, char oper_val, int prio) {
-  Stack stack;
-  stack.val_dub = val_dub;
-  stack.prio = prio;
-  stack.oper_val = oper_val;
-  return stack;
-}
-
 double CalcModel::Calc(const std::string& calc_src, double X_num) {
   int position = 0;
   while (calc_src[position]) {  //  Главный цикл вычисления
-    Stack st_buf =
+    StackType st_buf =
         ParserUno(calc_src, &position, X_num);  //  Парсим одну лексемму
     if (st_buf.prio) {  //  Если получили операцию или скобку
       while (st_buf.oper_val) {
@@ -108,18 +79,17 @@ double CalcModel::Calc(const std::string& calc_src, double X_num) {
           oper_stack_.pop();
           st_buf.oper_val = 0.0;
         } else if (UnarCheck(st_buf.oper_val, calc_src, position)) {
-          oper_stack_.push(St(0.0, st_buf.oper_val, st_buf.prio));
+          oper_stack_.push({0.0, st_buf.oper_val, st_buf.prio});
           num_stack_.push(0.0);  //  Получили унарный знак
           st_buf.oper_val = 0.0;
         } else if (oper_stack_.empty() || oper_stack_.top().oper_val == '(') {
           // Если стэк пуст или в нём скобка
-
-          oper_stack_.push(St(0.0, st_buf.oper_val, st_buf.prio));
+          oper_stack_.push({0.0, st_buf.oper_val, st_buf.prio});
           st_buf.oper_val = 0.0;
         } else if (st_buf.prio >
                    oper_stack_.top().prio) {  //  Если приоритет опреации
-          oper_stack_.push(St(0.0, st_buf.oper_val,  //  больше приоритета
-                            st_buf.prio));  //  в стеке
+          oper_stack_.push({0.0, st_buf.oper_val,  //  больше приоритета
+                            st_buf.prio});  //  в стеке
           st_buf.oper_val = 0.0;
         } else {
           double buf_num = MathOperations();  //  Выполнить расчёт
@@ -157,7 +127,7 @@ double CalcModel::Calc(const std::string& calc_src, double X_num) {
 //  Парсер одной лексеммы
 CalcModel::StackType CalcModel::ParserUno(const std::string& calc_src,
                                           int* position, double X_num) {
-  Stack stack1;
+  StackType stack1{};
   int prio = PrioCheck(calc_src[*position]);
   if (prio) {
     stack1.prio = prio;
@@ -168,7 +138,7 @@ CalcModel::StackType CalcModel::ParserUno(const std::string& calc_src,
       stack1.val_dub = X_num;
       *position += 1;
     } else {
-      std::string buf;
+      std::string buf{};
       *position = *position + BufferingNumber(&calc_src[*position], buf);
       stack1.prio = prio;
       stack1.val_dub = std::stod(buf);
@@ -178,8 +148,8 @@ CalcModel::StackType CalcModel::ParserUno(const std::string& calc_src,
 }
 
 //  Определение приоритета опреатора
-int CalcModel::PrioCheck(const char src_string) {
-  int prior = 0;
+int CalcModel::PrioCheck(const char src_string) const noexcept {
+  int prior{};
   int position_num = PositionCounter(src_string);
   if (position_num > 16)
     prior = 0;
@@ -196,10 +166,10 @@ int CalcModel::PrioCheck(const char src_string) {
   return prior;
 }
 
-int CalcModel::PositionCounter(
-    char src_string) {  //  Подсчёт позиции операции строке приоритетов
+int CalcModel::PositionCounter(char src_string)
+    const noexcept {  //  Подсчёт позиции операции строке приоритетов
   const char* operators = ")+-/*M^@ABCDEFGH(";
-  int counter = 0;
+  int counter{};
   while (operators[counter]) {
     if (operators[counter] == src_string) {
       break;
@@ -235,7 +205,7 @@ int CalcModel::BracketFinder() {
 
 int CalcModel::UnarCheck(char check, const std::string& calc_str,
                          int position) {
-  int unar_minus_find = 0;
+  int unar_minus_find{};
   if ((check == '-' || check == '+') && !position)
     unar_minus_find = 1;
   if ((check == '-' || check == '+') && position > 0)
