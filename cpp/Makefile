@@ -36,12 +36,13 @@ all: lib
 # Dinamic lib 	$(CXX) $(CPP_STD) $(CXXFLAGS) -shared -o $(LIB_DIR)/$(TARGET).so $(OBJS) $(GCOVFLAGS)
 
 
-lib: $(OBJS)
+lib:
 	mkdir -p $(BUILD_DIR)
 ifeq ($(OS), Darwin)
-	cp ./src/* ../pkg/calcadapter/
-	cd ../pkg/calcadapter/ && g++ -std=c++17 -dynamiclib -fPIC -o libsmart_calc.dylib ./*.cc
-	cd ../pkg/calcadapter/ && cp ./libsmart_calc.dylib ../../
+	cp ./src/* $(BUILD_DIR)
+	cd $(BUILD_DIR) && g++ -std=c++17 -dynamiclib -fPIC -o libsmart_calc.dylib ./*.cc
+	cd $(BUILD_DIR) && cp ./libsmart_calc.dylib ../
+	cd $(BUILD_DIR) && cp ./libsmart_calc.dylib ../pkg/calcadapter/
 else
 	cd ../pkg/calcadapter/ && cp ./src/* ../pkg/calcadapter/
 	cd ../pkg/calcadapter/ && g++ -std=c++17 -shared -fPIC -o libsmart_calc.so ./*.cc

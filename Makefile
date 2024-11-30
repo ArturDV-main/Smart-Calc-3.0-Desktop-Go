@@ -5,7 +5,7 @@ all:
 
 test:
 	cd ./cpp && make
-	cd ./pkg/calcadapter && go test .
+	cd ./pkg/calcadapter && go test
 
 
 clean:
