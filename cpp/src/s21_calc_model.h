@@ -56,8 +56,8 @@ class CalcModel {
   std::vector<double> GetDifferent();
 
  private:
-  std::stack<Stack> oper_stack_;
-  std::stack<double> num_stack_;
+  std::stack<Stack> oper_stack_{};
+  std::stack<double> num_stack_{};
   double result_;
   std::array<double, 3> credit_data_;
   std::vector<double> different_data_;
