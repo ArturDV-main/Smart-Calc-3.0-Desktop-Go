@@ -33,9 +33,10 @@ ifeq ($(OS), Darwin)
 	cd $(BUILD_DIR) && cp ./libsmart_calc.dylib ../
 	cd $(BUILD_DIR) && cp ./libsmart_calc.dylib ../pkg/calcadapter/
 else
-	cd ../pkg/calcadapter/ && cp ./src/* ../pkg/calcadapter/
-	cd ../pkg/calcadapter/ && g++ -std=c++17 -shared -fPIC -o libsmart_calc.so ./*.cc
-	cd ../pkg/calcadapter/ && cp ./libsmart_calc.so ../../
+	cp ./src/* $(BUILD_DIR)
+	cd $(BUILD_DIR) && g++ -std=c++17 -shared -fPIC -o libsmart_calc.so ./*.cc
+	cd $(BUILD_DIR) && cp ./libsmart_calc.so ../
+	cd $(BUILD_DIR) && cp ./libsmart_calc.so ../pkg/calcadapter/
 endif
 
 clean:

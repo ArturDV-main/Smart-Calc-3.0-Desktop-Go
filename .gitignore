@@ -3,5 +3,6 @@ node_modules
 frontend/dist
 build/src/s21_calc_controller.cc.gcno
 pkg/calcadapter/libsmart_calc.dylib
-pkg/calcadapter/libsmart_calc.dylib
 libsmart_calc.dylib
+pkg/calcadapter/libsmart_calc.so
+libsmart_calc.so
