@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"fmt"
-	"smartcalc/pkg/calcadapter"
 )
 
 // App struct
@@ -24,9 +23,10 @@ func (a *App) startup(ctx context.Context) {
 
 // Greet returns a greeting for the given name
 func (a *App) Greet(expression string) string {
-	got, err := calcadapter.Calculate(expression)
-	if err != nil {
-		return fmt.Sprintf("Calculate error:  %s", err.Error())
-	}
+	got := "Good bye" + expression
+	// got, err := calcadapter.Calculate(expression)
+	// if err != nil {
+	// 	return fmt.Sprintf("Calculate error:  %s", err.Error())
+	// }
 	return fmt.Sprintln("Got: ", got)
 }
