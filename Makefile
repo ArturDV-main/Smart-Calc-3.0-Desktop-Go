@@ -1,4 +1,14 @@
-all: lib open
+all: lib app open
+
+open:
+ifeq ($(OS), Darwin)
+	open ./build/bin/leftrana/smartcalc.app
+else
+	./build/bin/smartcalc
+endif
+
+app:
+
 	wails build
 	./build/bin/smartcalc
 
@@ -12,12 +22,3 @@ clean:
 
 lib:
 	cd ./cpp && make lib
-
-open:
-ifeq ($(OS), Darwin)
-	open ./build/bin/leftrana/smartcalc.app
-else
-    LIBS := -lgtest -lstdc++ -lcheck_pic -lrt -lpthread -lsubunit -lm -g
-	APPLICATION = 3dviewer
-	OPEN = ./$(APPLICATION)
-endif
