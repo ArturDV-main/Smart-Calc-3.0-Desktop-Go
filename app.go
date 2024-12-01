@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
-	calcadapter "leftrana/smartcalc/pkg/calcadapter"
+	"smartcalc/pkg/calcadapter"
 )
 
 // App struct

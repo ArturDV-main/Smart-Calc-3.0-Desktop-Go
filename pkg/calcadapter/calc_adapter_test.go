@@ -1,7 +1,7 @@
 package calcadapter_test
 
 import (
-	calcadapter "leftrana/smartcalc/pkg/calcadapter"
+	calcadapter "smartcalc/pkg/calcadapter"
 	"testing"
 )
 

@@ -1,8 +1,8 @@
-module leftrana/smartcalc
+module smartcalc
 
 go 1.21
 
-toolchain go1.23.3
+toolchain go1.23.2
 
 require github.com/wailsapp/wails/v2 v2.9.2
 
@@ -36,4 +36,4 @@ require (
 	golang.org/x/text v0.15.0 // indirect
 )
 
-// replace github.com/wailsapp/wails/v2 v2.9.2 => /home/leftrana/go/pkg/mod
+// replace github.com/wailsapp/wails/v2 v2.9.2 => /Users/leftrana/go/pkg/mod
