@@ -30,3 +30,11 @@ func (a *App) Greet(expression string) string {
 	}
 	return fmt.Sprintln("Got: ", got)
 }
+
+func (a *App) Graph(expression string) (float64, error) {
+	got, err := calcadapter.Calculate(expression)
+	if err != nil {
+		return 0, err
+	}
+	return got, nil
+}
