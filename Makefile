@@ -8,9 +8,8 @@ else
 endif
 
 app:
-
 	wails build
-	./build/bin/smartcalc
+
 
 test:
 	cd ./cpp && make
