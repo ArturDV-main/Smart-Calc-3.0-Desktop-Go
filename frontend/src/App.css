@@ -1,18 +1,19 @@
-#app {
+#App {
+    position: relative; /* Set position to relative */
     height: 100vh;
     text-align: center;
 }
 
+#logo-container {
+    position: absolute; /* Use absolute positioning */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    padding: 10px; /* Optional: Add some padding */
+}
+
 #logo {
-    display: block;
-    width: 50%;
-    height: 50%;
-    margin: auto;
-    padding: 10% 0 0;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-origin: content-box;
+    width: 150px; /* Set desired width */
+    height: auto; /* Maintain aspect ratio */
 }
 
 .result {
