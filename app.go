@@ -23,18 +23,18 @@ func (a *App) startup(ctx context.Context) {
 }
 
 // Greet returns a greeting for the given name
-func (a *App) Greet(expression string) string {
-	got, err := calcadapter.Calculate(expression)
+func (a *App) Greet(expression string, num_x float64) string {
+	got, err := calcadapter.Calculate(expression, num_x)
 	if err != nil {
 		return fmt.Sprintf("Calculate error:  %s", err.Error())
 	}
 	return fmt.Sprintln("Got: ", got)
 }
 
-func (a *App) Graph(expression string) (float64, error) {
-	got, err := calcadapter.Calculate(expression)
+func (a *App) Graph(expression string, num_x float64) float64 {
+	got, err := calcadapter.Calculate(expression, num_x)
 	if err != nil {
-		return 0, err
+		return 0
 	}
-	return got, nil
+	return got
 }
