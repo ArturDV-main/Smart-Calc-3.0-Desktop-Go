@@ -8,7 +8,7 @@ else
 endif
 
 app:
-	wails build
+	wails build -tags webkit2_41
 
 
 test:
