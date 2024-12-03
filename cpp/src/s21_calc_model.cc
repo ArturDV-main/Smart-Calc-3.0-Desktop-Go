@@ -38,7 +38,7 @@ void CalcModel::CalcCredit(std::array<double, 3> data) {
 
 bool CalcModel::ValidationEqual(const std::string& str) const noexcept {
   bool valid(false);
-  std::string tmp("+-/*M^@ABCDEFGH)(1234567890.eX");
+  std::string tmp("+-/*M^@ABCDEFGH)(1234567890.ex");
   for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
     const char c = *it;
     if (tmp.find(c) == std::string::npos) {
@@ -133,7 +133,7 @@ CalcModel::StackType CalcModel::ParserUno(const std::string& calc_src,
     stack1.prio = prio;
     stack1.oper_val = calc_src[*position];
   } else {
-    if (calc_src[*position] == 'X') {
+    if (calc_src[*position] == 'x') {
       stack1.prio = 0;
       stack1.val_dub = X_num;
       *position += 1;
