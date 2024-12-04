@@ -47,8 +47,9 @@ function App() {
         const xValues: number[] = [];
         const yValues: number[] = [];
         for (let x = -20; x <= 20; x += 0.01) {
-            xValues.push(x);
-            yValues.push(await Graph(expression, x));
+            const roundedX = parseFloat(x.toFixed(7));
+            xValues.push(roundedX);
+            yValues.push(await Graph(expression, roundedX));
         }
         setResultGraph({
             labels: xValues,
@@ -74,8 +75,9 @@ function App() {
                 <input id="expression" className="input" onChange={updateExpression} autoComplete="off" name="input" type="text" />
                 <button className="btn" onClick={greet}>Calc</button>
             </div>
+            <div>Num X <input id="expression" className="inputx" onChange={updateExpression} autoComplete="off" name="input" type="text" /></div>
             <div>
-                <h2>Sine Wave Graph</h2>
+                <h2>Wave Graph</h2>
                 <div id="input" className="input-box">
                     <button className="btn" onClick={graph}>Graph</button>
                 </div>

@@ -44,7 +44,18 @@
     outline: none;
     height: 30px;
     line-height: 30px;
-    padding: 0 10px;
+    padding: 0 100px;
+    background-color: rgba(240, 240, 240, 1);
+    -webkit-font-smoothing: antialiased;
+}
+
+.input-box .inputx {
+    border: none;
+    border-radius: 3px;
+    outline: none;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 50px;
     background-color: rgba(240, 240, 240, 1);
     -webkit-font-smoothing: antialiased;
 }

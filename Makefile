@@ -21,3 +21,6 @@ clean:
 
 lib:
 	cd ./cpp && make lib
+
+dev:
+	wails dev -tags webkit2_41
