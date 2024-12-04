@@ -52,10 +52,10 @@ func replaceMathFunctions(input string) string {
 		"ln":   LN,
 		"log":  LOG,
 	}
-
 	for funcName, code := range replacements {
 		input = strings.ReplaceAll(input, funcName, string(code))
 	}
+	input = strings.ReplaceAll(input, " ", "")
 
 	return input
 }

@@ -25,7 +25,7 @@ function App() {
         labels: [],
         datasets: [
             {
-                label: 'sin(x)',
+                label: 'expression',
                 data: [],
                 borderColor: 'rgba(75, 192, 192, 1)',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
@@ -54,7 +54,7 @@ function App() {
             labels: xValues,
             datasets: [
                 {
-                    label: 'sin(x)',
+                    label: expression,
                     data: yValues,
                     borderColor: 'rgba(75, 192, 192, 1)',
                     backgroundColor: 'rgba(75, 192, 192, 0.2)',
