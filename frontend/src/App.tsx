@@ -34,6 +34,7 @@ function App() {
         ],
     });
     const [expression, setExpression] = useState('');
+    const [NumXVal, setXval] = useState('');
 
     const updateExpression = (e: any) => setExpression(e.target.value);
 
@@ -75,7 +76,7 @@ function App() {
                 <input id="expression" className="input" onChange={updateExpression} autoComplete="off" name="input" type="text" />
                 <button className="btn" onClick={greet}>Calc</button>
             </div>
-            <div>Num X <input id="expression" className="inputx" onChange={updateExpression} autoComplete="off" name="input" type="text" /></div>
+            <div>Num x <input id="xval" className="inputx" onChange={updateExpression} autoComplete="off" name="input" type="text" /></div>
             <div>
                 <h2>Wave Graph</h2>
                 <div id="input" className="input-box">
@@ -88,3 +89,14 @@ function App() {
 }
 
 export default App;
+
+// return (
+//     <div id="App">
+//         <img src={logo} id="logo" alt="logo"/>
+//         <div id="result" className="result">{resultText}</div>
+//         <div id="input" className="input-box">
+//             <input id="name" className="input" onChange={updateName} autoComplete="off" name="input" type="text"/>
+//             <button className="btn" onClick={greet}>Greet</button>
+//         </div>
+//     </div>
+// )
