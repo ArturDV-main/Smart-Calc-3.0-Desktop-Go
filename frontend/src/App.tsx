@@ -1,6 +1,6 @@
 import './App.css'
 
-import { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react'
 import logo from './assets/images/logo-universal.png'
 import { Graph, Greet } from "../wailsjs/go/main/App"
 import { ChartConfiguration} from 'chart.js'
@@ -15,7 +15,7 @@ export const App: React.FC = () => {
     const bInputRef = useRef<HTMLInputElement>(null)
     const [graphData, setGraphData] = useState<ChartConfiguration>()
 
-    const [resultText, setResultText] = useState("Please enter your expression below 👇")
+    const [resultText, setResultText] = useState("Please enter your expression below")
 
     const handleCalcClick = useCallback(async () => {
         if (!inpurRef.current || !xInputRef.current) return
@@ -63,6 +63,14 @@ export const App: React.FC = () => {
         })
     }, [])
 
+    const handleInput = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
+        const beforeDot = e.currentTarget.value.split(".")[0]
+        const afterDot = e.currentTarget.value.split(".")[1] ?? 0
+        const qwe = +beforeDot >= 1000000 || afterDot.length >= 7
+        if (qwe && e.key !== "Backspace") 
+            e.preventDefault()
+    }, [])
+
     return (
         <div id="App">
             <div id="logo-container">
@@ -74,18 +82,18 @@ export const App: React.FC = () => {
                 <label>
                     Num x <input id="xval" className="inputx" ref={xInputRef} autoComplete="off" name="input" type="text" />
                 </label>
-                <button className="btn" onClick={handleCalcClick}>Calc</button>
+                <button className="btn" onClick={handleCalcClick}>Calc =</button>
             </div>
             <div>
                 <h2>Wave Graph</h2>
                 <div className='graph-input'>
                     <label>
                         <span>Range A</span>
-                        <input id="xval" className="inputx" ref={aInputRef} autoComplete="off" name="input" type="text" />
+                        <input id="xval" className="inputx" ref={aInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} />
                     </label>
                     <label>
                         <span>Range B</span>
-                        <input id="xval" className="inputx" ref={bInputRef} autoComplete="off" name="input" type="text" />
+                        <input id="xval" className="inputx" ref={bInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} />
                     </label>
                     <button className="btn" onClick={handleGraphClick}>Graph</button>
                 </div>
