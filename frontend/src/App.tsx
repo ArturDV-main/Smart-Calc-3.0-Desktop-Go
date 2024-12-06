@@ -1,70 +1,67 @@
-import { useState, useEffect } from 'react';
-import logo from './assets/images/logo-universal.png';
-import './App.css';
-import { Greet } from "../wailsjs/go/main/App";
-import { Graph } from "../wailsjs/go/main/App";
-import { Line } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js';
+import './App.css'
 
-Chart.register(...registerables);
+import { useCallback, useRef, useState } from 'react'
+import logo from './assets/images/logo-universal.png'
+import { Graph, Greet } from "../wailsjs/go/main/App"
+import { ChartConfiguration} from 'chart.js'
+import { ChartGraph } from './components/graph'
 
-interface ChartData {
-    labels: number[];
-    datasets: {
-        label: string;
-        data: number[];
-        borderColor: string;
-        backgroundColor: string;
-        borderWidth: number;
-    }[];
-}
+// --------------------------------------------------------------------------------
 
-function App() {
-    const [resultText, setResultText] = useState("Please enter your expression below 👇");
-    const [resultGraph, setResultGraph] = useState<ChartData>({
-        labels: [],
-        datasets: [
-            {
-                label: 'expression',
-                data: [],
-                borderColor: 'rgba(75, 192, 192, 1)',
-                backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                borderWidth: 1,
-            },
-        ],
-    });
-    const [expression, setExpression] = useState('');
-    const [NumXVal, setXval] = useState('');
+export const App: React.FC = () => {
+    const inpurRef = useRef<HTMLInputElement>(null)
+    const xInputRef = useRef<HTMLInputElement>(null)
+    const aInputRef = useRef<HTMLInputElement>(null)
+    const bInputRef = useRef<HTMLInputElement>(null)
+    const [graphData, setGraphData] = useState<ChartConfiguration>()
 
-    const updateExpression = (e: any) => setExpression(e.target.value);
+    const [resultText, setResultText] = useState("Please enter your expression below 👇")
 
-    const updateResultText = (result: string) => setResultText(result);
+    const handleCalcClick = useCallback(async () => {
+        if (!inpurRef.current || !xInputRef.current) return
 
-    function greet() {
-        Greet(expression, 0).then(updateResultText);
-    }
+        const x = xInputRef.current.value ? +xInputRef.current.value : 0
 
-    async function graph() {
-        const xValues: number[] = [];
-        const yValues: number[] = [];
-        for (let x = -20; x <= 20; x += 0.01) {
-            const roundedX = parseFloat(x.toFixed(7));
-            xValues.push(roundedX);
-            yValues.push(await Graph(expression, roundedX));
+        const result = await Greet(inpurRef.current.value, x)
+        setResultText(result)
+    }, [])
+
+    const handleGraphClick = useCallback(async () => {
+        if (!inpurRef.current) return
+
+        setGraphData(undefined)
+
+        const expression = inpurRef.current.value
+
+        const rangeA = aInputRef.current ? +aInputRef.current.value : 0
+        const rangeB = bInputRef.current ? +bInputRef.current.value : 0
+
+        const diff = rangeB - rangeA
+
+        const disc = []
+        for (let x = rangeA; x <= rangeB; x += diff / 10000) {
+            disc.push(x)
         }
-        setResultGraph({
-            labels: xValues,
-            datasets: [
-                {
-                    label: expression,
-                    data: yValues,
-                    borderColor: 'rgba(75, 192, 192, 1)',
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                    borderWidth: 1,
-                },
-            ],
-        });
-    }
+
+        const xvalues = disc.map(x => +x.toFixed(7))
+        const yvalues = await Promise.all(disc.map(async (x) => await Graph(expression, x)))
+
+        setGraphData({
+            type: 'line',
+            data: {                
+                labels: xvalues,
+                datasets: [
+                    {
+                        label: expression,
+                        data: yvalues,
+                        borderColor: 'rgba(75, 192, 192, 1)',
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                        borderWidth: 1
+                    },
+                ],
+            }                    
+        })
+    }, [])
 
     return (
         <div id="App">
@@ -73,30 +70,27 @@ function App() {
             </div>
             <div id="result" className="result">{resultText}</div>
             <div id="input" className="input-box">
-                <input id="expression" className="input" onChange={updateExpression} autoComplete="off" name="input" type="text" />
-                <button className="btn" onClick={greet}>Calc</button>
+                <input id="expression" className="input" ref={inpurRef} autoComplete="off" name="input" type="text" />
+                <label>
+                    Num x <input id="xval" className="inputx" ref={xInputRef} autoComplete="off" name="input" type="text" />
+                </label>
+                <button className="btn" onClick={handleCalcClick}>Calc</button>
             </div>
-            <div>Num x <input id="xval" className="inputx" onChange={updateExpression} autoComplete="off" name="input" type="text" /></div>
             <div>
                 <h2>Wave Graph</h2>
-                <div id="input" className="input-box">
-                    <button className="btn" onClick={graph}>Graph</button>
+                <div className='graph-input'>
+                    <label>
+                        <span>Range A</span>
+                        <input id="xval" className="inputx" ref={aInputRef} autoComplete="off" name="input" type="text" />
+                    </label>
+                    <label>
+                        <span>Range B</span>
+                        <input id="xval" className="inputx" ref={bInputRef} autoComplete="off" name="input" type="text" />
+                    </label>
+                    <button className="btn" onClick={handleGraphClick}>Graph</button>
                 </div>
-                <Line data={resultGraph} />
+                <ChartGraph data={graphData} />
             </div>
         </div>
-    );
+    )
 }
-
-export default App;
-
-// return (
-//     <div id="App">
-//         <img src={logo} id="logo" alt="logo"/>
-//         <div id="result" className="result">{resultText}</div>
-//         <div id="input" className="input-box">
-//             <input id="name" className="input" onChange={updateName} autoComplete="off" name="input" type="text"/>
-//             <button className="btn" onClick={greet}>Greet</button>
-//         </div>
-//     </div>
-// )

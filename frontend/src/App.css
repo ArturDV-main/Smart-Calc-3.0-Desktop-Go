@@ -1,9 +1,3 @@
-#App {
-    position: relative; /* Set position to relative */
-    height: 100vh;
-    text-align: center;
-}
-
 #logo-container {
     position: absolute; /* Use absolute positioning */
     top: 0; /* Align to the top */
@@ -22,7 +16,24 @@
     margin: 1.5rem auto;
 }
 
-.input-box .btn {
+.input-box {
+    display: grid;
+    grid-template-columns: 2fr 1fr 48px;
+    gap: 8px;
+    align-items: center;
+    justify-content: center;
+    max-width: 500px;
+    margin: auto;
+}
+
+label {
+    display: flex;
+    gap: 4px;
+    white-space: nowrap;
+    align-items: center;
+}
+
+.btn {
     width: 60px;
     height: 30px;
     line-height: 30px;
@@ -33,16 +44,17 @@
     cursor: pointer;
 }
 
-.input-box .btn:hover {
+.btn:hover {
     background-image: linear-gradient(to top, #cfd9df 0%, #e2ebf0 100%);
     color: #333333;
+    cursor: pointer;
 }
 
 .input-box .input {
     border: none;
     border-radius: 3px;
     outline: none;
-    width: 300px;
+    /* width: 300px; */
     height: 30px;
     line-height: 30px;
     padding: 0 10px;
@@ -51,6 +63,7 @@
 }
 
 .inputx {
+    width: 100%;
     border: none;
     border-radius: 3px;
     outline: none;
@@ -59,6 +72,15 @@
     padding: 0 5px;
     background-color: rgba(240, 240, 240, 1);
     -webkit-font-smoothing: antialiased;
+}
+
+.graph-input {
+    max-width: 500px;
+    margin: auto;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 48px;
+    gap: 8px;
 }
 
 .input-box .input:hover {
