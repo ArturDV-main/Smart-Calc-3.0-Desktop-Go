@@ -52,5 +52,11 @@ func TestHistory(t *testing.T) {
 	if err == nil {
 		t.Errorf("err = %v; want not nil", err)
 	}
-
+	got_graph, err := calcadapter.GraphicCalc("sin ( x )", -10, 10)
+	if err != nil {
+		t.Errorf("err = %v; want nil", err)
+	}
+	if len(got_graph) == 0 {
+		t.Errorf("got = %d; want not 0", len(got_graph))
+	}
 }

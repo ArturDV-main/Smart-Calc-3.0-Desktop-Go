@@ -37,14 +37,13 @@ const (
 	LOG  TrigonCode = 'H'
 )
 
-func GraphicCalc(str string, range_a float64, range_b float64) ([]float64, error) {
-	str = replaceMathFunctions(str)
-	_, err := Calculate(str, range_a)
+func GraphicCalc(str_r string, range_a float64, range_b float64) ([]float64, error) {
+	_, err := Calculate(str_r, range_a)
 	if err != nil {
 
 		return nil, err
 	}
-	HistoryWrite(str)
+	str := replaceMathFunctions(str_r)
 	if range_a == range_b {
 		return nil, errors.New("range_a = range_b")
 	}
@@ -84,15 +83,15 @@ func Calc(wg *sync.WaitGroup, cstr *C.char, num C.double, val *float64) {
 	*val = float64(result)
 }
 
-func Calculate(str string, num_x float64) (float64, error) {
-	str = replaceMathFunctions(str)
+func Calculate(str_r string, num_x float64) (float64, error) {
+	str := replaceMathFunctions(str_r)
 	cstr := C.CString(str)
 	num := C.double(num_x)
 	c, err := Calculator(cstr, num)
 	if err != nil {
 		return 0.0, err
 	}
-	HistoryWrite(str)
+	HistoryWrite(str_r)
 	return c, nil
 }
 

@@ -38,3 +38,11 @@ func (a *App) Graph(expression string, num_x float64) float64 {
 	}
 	return got
 }
+
+func (a *App) GraphicCalc(expression string, range_a float64, range_b float64) []float64 {
+	got, err := calcadapter.GraphicCalc(expression, range_a, range_b)
+	if err != nil {
+		return nil
+	}
+	return got
+}
