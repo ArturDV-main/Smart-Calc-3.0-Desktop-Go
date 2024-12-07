@@ -6,6 +6,10 @@ export function Graph(arg1, arg2) {
   return window['go']['main']['App']['Graph'](arg1, arg2);
 }
 
+export function GraphicCalc(arg1, arg2, arg3) {
+  return window['go']['main']['App']['GraphicCalc'](arg1, arg2, arg3);
+}
+
 export function Greet(arg1, arg2) {
   return window['go']['main']['App']['Greet'](arg1, arg2);
 }

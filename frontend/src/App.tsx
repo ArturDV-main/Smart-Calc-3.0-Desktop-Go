@@ -2,7 +2,7 @@ import './App.css'
 
 import React, { useCallback, useRef, useState } from 'react'
 import logo from './assets/images/logo-universal.png'
-import { Graph, Greet } from "../wailsjs/go/main/App"
+import { Graph, Greet, GraphicCalc } from "../wailsjs/go/main/App"
 import { ChartConfiguration} from 'chart.js'
 import { ChartGraph } from './components/graph'
 
@@ -42,9 +42,10 @@ export const App: React.FC = () => {
         for (let x = rangeA; x <= rangeB; x += diff / 10000) {
             disc.push(x)
         }
-
+        
         const xvalues = disc.map(x => +x.toFixed(7))
-        const yvalues = await Promise.all(disc.map(async (x) => await Graph(expression, x)))
+        // const yvalues = await Promise.all(disc.map(async (x) => await Graph(expression, x)))
+        const yvalues = await GraphicCalc(expression, rangeA, rangeB)
 
         setGraphData({
             type: 'line',
