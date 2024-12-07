@@ -2,12 +2,14 @@ package calcadapter
 
 /*
    #cgo CXXFLAGS: -std=c++17
-   #cgo LDFLAGS: -lsmart_calc
+   #cgo LDFLAGS: -L. -lsmart_calc
    #include "../../cpp/src/s21_calc_controller.h"
 */
 import "C"
 import (
 	"errors"
+	"log"
+	"os"
 	"strings"
 )
 
@@ -58,4 +60,27 @@ func replaceMathFunctions(input string) string {
 	input = strings.ReplaceAll(input, " ", "")
 
 	return input
+}
+
+func HistoryWrite(text string) error {
+	f, err := os.OpenFile("history.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	if err != nil {
+		log.Fatal(err)
+	}
+	defer f.Close()
+	_, err = f.WriteString(text + "\n")
+	if err != nil {
+		log.Println("Unable to write file:", err)
+		return err
+	}
+	return nil
+}
+
+func HistoryRead() (string, error) {
+	var text string
+	return text, nil
+}
+
+func CleanHistory() {
+
 }
