@@ -37,7 +37,12 @@ const (
 	LOG  TrigonCode = 'H'
 )
 
-func GraphicCalc(str_r string, range_a float64, range_b float64) ([]float64, error) {
+type Point struct {
+	X float64 `json:"x"`
+	Y float64 `json:"y"`
+}
+
+func GraphicCalc(str_r string, range_a float64, range_b float64) ([]Point, error) {
 	_, err := Calculate(str_r, range_a)
 	if err != nil {
 
@@ -51,14 +56,17 @@ func GraphicCalc(str_r string, range_a float64, range_b float64) ([]float64, err
 		range_a, range_b = range_b, range_a
 	}
 	diff := (range_b - range_a) / step
-	var result []float64 = make([]float64, step)
+	var result []Point = make([]Point, step)
 	var wg sync.WaitGroup
 	cstr := C.CString(str)
 	for i := range result {
 		wg.Add(1)
-		go Calc(&wg, cstr, C.double(range_a+diff*float64(i)), &result[i])
+		x := range_a + float64(i)*diff
+		go Calc(&wg, cstr, C.double(x), &result[i].Y)
+		result[i].X = x
 	}
 	wg.Wait()
+
 	return result, nil
 }
 

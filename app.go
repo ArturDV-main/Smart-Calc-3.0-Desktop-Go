@@ -31,20 +31,33 @@ func (a *App) Greet(expression string, num_x float64) string {
 	return fmt.Sprintln("Got: ", got)
 }
 
-func (a *App) Graph(expression string, num_x float64) float64 {
-	got, err := calcadapter.Calculate(expression, num_x)
-	if err != nil {
-		return 0
-	}
-	return got
+type GraphData struct {
+	Points []calcadapter.Point `json:"points"`
+	MaxY   float64             `json:"maxY"`
+	MinY   float64             `json:"minY"`
 }
 
-func (a *App) GraphicCalc(expression string, range_a float64, range_b float64) []float64 {
+func (a *App) GraphicCalc(expression string, range_a float64, range_b float64) GraphData {
 	got, err := calcadapter.GraphicCalc(expression, range_a, range_b)
+	var data GraphData
 	if err != nil {
-		return nil
+
+		return data
 	}
-	return got
+	if len(got) > 0 {
+		data.MaxY = got[0].Y
+		data.MinY = got[0].Y
+	}
+	for _, v := range got {
+		if v.Y > data.MaxY {
+			data.MaxY = v.Y
+		}
+		if v.Y < data.MinY {
+			data.MinY = v.Y
+		}
+	}
+	data.Points = got
+	return data
 }
 
 func (a *App) HistoryRead() ([]string, error) {

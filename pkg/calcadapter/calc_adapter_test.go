@@ -30,6 +30,7 @@ func TestAbs(t *testing.T) {
 	if len(got_graph) == 0 {
 		t.Errorf("got = %d; want not 0", len(got_graph))
 	}
+	log.Println(got_graph[0:10])
 }
 
 func TestHistory(t *testing.T) {

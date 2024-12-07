@@ -1,10 +1,10 @@
 import './App.css'
 
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import logo from './assets/images/logo-universal.png'
-import { Graph, Greet, GraphicCalc } from "../wailsjs/go/main/App"
-import { ChartConfiguration} from 'chart.js'
-import { ChartGraph } from './components/graph'
+import { Greet, GraphicCalc, HistoryRead, HistoryClean } from "../wailsjs/go/main/App"
+import { main } from '../wailsjs/go/models'
+import { Graph } from './components/graph'
 
 // --------------------------------------------------------------------------------
 
@@ -13,7 +13,11 @@ export const App: React.FC = () => {
     const xInputRef = useRef<HTMLInputElement>(null)
     const aInputRef = useRef<HTMLInputElement>(null)
     const bInputRef = useRef<HTMLInputElement>(null)
-    const [graphData, setGraphData] = useState<ChartConfiguration>()
+    const rangeA = useRef<number>(0)
+    const rangeB = useRef<number>(0)
+    const [graphData, setGraphData] = useState<main.GraphData>()
+    const [historyList, setHistoryList] = useState<string[]>([])
+    const [listOpened, setListOpened] = useState(false)
 
     const [resultText, setResultText] = useState("Please enter your expression below")
 
@@ -32,54 +36,84 @@ export const App: React.FC = () => {
         setGraphData(undefined)
 
         const expression = inpurRef.current.value
+        rangeA.current = aInputRef.current ? +aInputRef.current.value : 0
+        rangeB.current = bInputRef.current ? +bInputRef.current.value : 0
 
-        const rangeA = aInputRef.current ? +aInputRef.current.value : 0
-        const rangeB = bInputRef.current ? +bInputRef.current.value : 0
+        const data = await GraphicCalc(expression, rangeA.current, rangeB.current)
 
-        const diff = rangeB - rangeA
 
-        const disc = []
-        for (let x = rangeA; x <= rangeB; x += diff / 30000) {
-            disc.push(x)
-        }
-        
-        const xvalues = disc.map(x => +x.toFixed(7))
-        // const yvalues = await Promise.all(disc.map(async (x) => await Graph(expression, x)))
-        const yvalues = await GraphicCalc(expression, rangeA, rangeB)
+        setGraphData(data)
 
-        setGraphData({
-            type: 'line',
-            data: {                
-                labels: xvalues,
-                datasets: [
-                    {
-                        label: expression,
-                        data: yvalues,
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderWidth: 1
-                    },
-                ],
-            }                    
-        })
     }, [])
+
+    const handleHistoryBtnClick = useCallback(async () => {
+        if (listOpened) {
+            setListOpened(false)
+            return
+        }
+    }, [])
+
+    useEffect(() => {
+        if (listOpened)
+            HistoryRead().then(list => setHistoryList(list))
+        else
+            setHistoryList([])
+
+    }, [listOpened])
 
     const handleInput = useCallback((e: React.KeyboardEvent<HTMLInputElement>) => {
         const beforeDot = e.currentTarget.value.split(".")[0]
         const afterDot = e.currentTarget.value.split(".")[1] ?? 0
         const qwe = +beforeDot >= 1000000 || afterDot.length >= 7
-        if (qwe && e.key !== "Backspace") 
+        if (qwe && e.key !== "Backspace")
             e.preventDefault()
     }, [])
 
     return (
-        <div id="App">
+        <div id="app">
             <div id="logo-container">
                 <img src={logo} id="logo" alt="logo" />
             </div>
             <div id="result" className="result">{resultText}</div>
             <div id="input" className="input-box">
-                <input id="expression" className="input" ref={inpurRef} autoComplete="off" name="input" type="text" />
+                <label style={{ position: 'relative' }}>
+                    <input id="expression" className="input" ref={inpurRef} autoComplete="off" name="input" type="text" />
+                    <button className='list-button' onClick={() => setListOpened(!listOpened)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#1b2636">
+                            <path d="M480-360 280-560h400L480-360Z" />
+                        </svg>
+                    </button>
+                    {listOpened &&
+                        <div className='history-list'>
+                            <ul>
+                                {historyList.map((item, index) =>
+                                    <li
+                                        key={'history-item' + index}
+                                        onClick={() => {
+                                            if (inpurRef.current)
+                                                inpurRef.current.value = item
+
+                                            setListOpened(false)
+                                        }}
+                                    >
+                                        {item}
+                                    </li>
+                                )}
+                            </ul>
+
+                            <button
+                                className='clear-history'
+                                onClick={() => {
+                                    HistoryClean()
+                                    .finally(() => {
+                                        setListOpened(false) 
+                                    })
+                                }}
+                            >
+                                Clear history
+                            </button>
+                        </div>}
+                </label>
                 <label>
                     Num x <input id="xval" className="inputx" ref={xInputRef} autoComplete="off" name="input" type="text" />
                 </label>
@@ -98,7 +132,9 @@ export const App: React.FC = () => {
                     </label>
                     <button className="btn" onClick={handleGraphClick}>Graph</button>
                 </div>
-                <ChartGraph data={graphData} />
+                <div className='graph-container'>
+                    <Graph data={graphData} rangeA={rangeA.current} rangeB={rangeB.current} />
+                </div>
             </div>
         </div>
     )
