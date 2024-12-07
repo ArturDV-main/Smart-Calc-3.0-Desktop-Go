@@ -13,3 +13,11 @@ export function GraphicCalc(arg1, arg2, arg3) {
 export function Greet(arg1, arg2) {
   return window['go']['main']['App']['Greet'](arg1, arg2);
 }
+
+export function HistoryClean() {
+  return window['go']['main']['App']['HistoryClean']();
+}
+
+export function HistoryRead() {
+  return window['go']['main']['App']['HistoryRead']();
+}

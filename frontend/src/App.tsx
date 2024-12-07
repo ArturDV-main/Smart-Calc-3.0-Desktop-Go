@@ -39,7 +39,7 @@ export const App: React.FC = () => {
         const diff = rangeB - rangeA
 
         const disc = []
-        for (let x = rangeA; x <= rangeB; x += diff / 10000) {
+        for (let x = rangeA; x <= rangeB; x += diff / 30000) {
             disc.push(x)
         }
         

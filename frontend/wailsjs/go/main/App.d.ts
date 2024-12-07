@@ -6,3 +6,7 @@ export function Graph(arg1:string,arg2:number):Promise<number>;
 export function GraphicCalc(arg1:string,arg2:number,arg3:number):Promise<Array<number>>;
 
 export function Greet(arg1:string,arg2:number):Promise<string>;
+
+export function HistoryClean():Promise<void>;
+
+export function HistoryRead():Promise<Array<string>>;
