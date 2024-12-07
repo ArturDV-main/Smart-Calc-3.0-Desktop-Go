@@ -7,10 +7,12 @@ package calcadapter
 */
 import "C"
 import (
+	"bufio"
 	"errors"
 	"log"
 	"os"
 	"strings"
+	"sync"
 )
 
 type Resp struct {
@@ -18,15 +20,8 @@ type Resp struct {
 	Err    error
 }
 
-func Calculate(str string, num_x float64) (float64, error) {
-	cstr := C.CString(replaceMathFunctions(str))
-	num := C.double(num_x)
-	c := C.StartCalc(cstr, num)
-	if c.err == 1 {
-		return 0.0, errors.New("error")
-	}
-	return float64(c.result), nil
-}
+const history = "history.txt"
+const step = 100000
 
 type TrigonCode rune
 
@@ -41,6 +36,73 @@ const (
 	LN   TrigonCode = 'G'
 	LOG  TrigonCode = 'H'
 )
+
+func GraphicCalc(str string, range_a float64, range_b float64) ([]float64, error) {
+	str = replaceMathFunctions(str)
+	_, err := Calculate(str, range_a)
+	if err != nil {
+
+		return nil, err
+	}
+	HistoryWrite(str)
+	if range_a == range_b {
+		return nil, errors.New("range_a = range_b")
+	}
+	if range_b < range_a {
+		range_a, range_b = range_b, range_a
+	}
+	diff := (range_b - range_a) / step
+	var result []float64 = make([]float64, step)
+	var wg sync.WaitGroup
+	cstr := C.CString(str)
+	for i := range result {
+		wg.Add(1)
+		go Calc(&wg, cstr, C.double(range_a+diff*float64(i)), &result[i])
+	}
+	wg.Wait()
+	return result, nil
+}
+
+func Calc(wg *sync.WaitGroup, cstr *C.char, num C.double, val *float64) {
+	if wg == nil {
+		log.Println("wg is nil")
+
+		return
+	}
+	defer wg.Done()
+	if val == nil {
+		log.Println("val is nil")
+
+		return
+	}
+	result, err := Calculator(cstr, num)
+	if err != nil {
+		log.Println(err)
+
+		return
+	}
+	*val = float64(result)
+}
+
+func Calculate(str string, num_x float64) (float64, error) {
+	str = replaceMathFunctions(str)
+	cstr := C.CString(str)
+	num := C.double(num_x)
+	c, err := Calculator(cstr, num)
+	if err != nil {
+		return 0.0, err
+	}
+	HistoryWrite(str)
+	return c, nil
+}
+
+func Calculator(cstr *C.char, num C.double) (float64, error) {
+	c := C.StartCalc(cstr, num)
+	if c.err == 1 {
+		return 0.0, errors.New(C.GoString(cstr))
+	}
+	return float64(c.result), nil
+}
 
 func replaceMathFunctions(input string) string {
 	replacements := map[string]TrigonCode{
@@ -63,9 +125,10 @@ func replaceMathFunctions(input string) string {
 }
 
 func HistoryWrite(text string) error {
-	f, err := os.OpenFile("history.txt", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(history, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Fatal(err)
+		log.Println("Unable to open file:", err)
+		return err
 	}
 	defer f.Close()
 	_, err = f.WriteString(text + "\n")
@@ -76,11 +139,26 @@ func HistoryWrite(text string) error {
 	return nil
 }
 
-func HistoryRead() (string, error) {
-	var text string
-	return text, nil
+func HistoryRead() ([]string, error) {
+	file, err := os.Open(history)
+	if err != nil {
+		log.Println("Unable to open file:", err)
+		return nil, err
+	}
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	var line []string
+	for scanner.Scan() {
+		l := scanner.Text()
+		line = append(line, l)
+	}
+	return line, nil
 }
 
 func CleanHistory() {
-
+	err := os.Remove(history)
+	if err != nil {
+		log.Println("Не удалось удалить файл:", err)
+		return
+	}
 }

@@ -27,7 +27,7 @@ func TestAbs(t *testing.T) {
 
 func TestHistory(t *testing.T) {
 	err := os.Remove("history.txt")
-	if err != nil {
+	if err != nil && err.Error() != "remove history.txt: no such file or directory" {
 		log.Println("Не удалось удалить файл:", err)
 		return
 	}
@@ -36,17 +36,21 @@ func TestHistory(t *testing.T) {
 		t.Errorf("err = %v; want nil", err)
 	}
 
-	err = calcadapter.HistoryWrite("10+10*2")
+	err = calcadapter.HistoryWrite("10+10*8")
 	if err != nil {
 		t.Errorf("err = %v; want nil", err)
 	}
-	// str, err = calcadapter.HistoryRead()
-	// if err != nil || got != 5 {
-	// 	t.Errorf("-5+5*2 = %f; want -10 ", got)
-	// }
-	// str = "5-5*2"
-	// got, err = calcadapter.Calculate(str, 0)
-	// if err != nil || got != -5 {
-	// 	t.Errorf("5-5*2 = %f; want 0 ", got)
-	// }
+	str, err := calcadapter.HistoryRead()
+	if len(str) != 2 {
+		t.Errorf("got = %d; want 2 ", len(str))
+	}
+	if err != nil || str[0] != "5+5*2" {
+		t.Errorf("got = %s; want 5+5*2", str[0])
+	}
+	calcadapter.CleanHistory()
+	_, err = calcadapter.HistoryRead()
+	if err == nil {
+		t.Errorf("err = %v; want not nil", err)
+	}
+
 }
