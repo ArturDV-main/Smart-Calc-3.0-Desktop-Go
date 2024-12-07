@@ -21,7 +21,7 @@ type Resp struct {
 }
 
 const history = "history.txt"
-const step = 30000
+const step = 5000
 
 type TrigonCode rune
 
