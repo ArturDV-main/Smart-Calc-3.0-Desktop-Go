@@ -20,7 +20,7 @@ type Resp struct {
 	Err    error
 }
 
-const history = "history.txt"
+const history = "../../history.txt"
 const step = 5000
 
 type TrigonCode rune

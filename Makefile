@@ -4,7 +4,7 @@ all: lib app open
 
 open:
 ifeq ($(OS), Darwin)
-	open /Users/leftrana/projects/Smart-Calc-3.0-Desktop-Go/build/bin/smartcalc.app
+	export DYLD_LIBRARY_PATH="/Users/leftrana/projects/Smart-Calc-3.0-Desktop-Go/pkg/calcadapter" && open /Users/leftrana/projects/Smart-Calc-3.0-Desktop-Go/build/bin/smartcalc.app
 else
 	./build/bin/smartcalc
 endif
@@ -23,9 +23,6 @@ clean:
 
 lib:
 	cd ./cpp && make lib
-ifeq ($(OS), Darwin)
-	export DYLD_LIBRARY_PATH="/Users/leftrana/projects/Smart-Calc-3.0-Desktop-Go/pkg/calcadapter"
-endif
 
 dev:
 	wails dev -tags webkit2_41
