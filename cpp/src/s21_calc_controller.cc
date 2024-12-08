@@ -13,16 +13,14 @@ struct Resp StartCalc(const char* a, const double x) {
   result.err = 0;
   result.errors = NULL;
   result.result = 0.0;
-  try {
-    calc_model.StartCalc(s, x);
-  } catch (const std::exception& e) {
+  bool r = calc_model.StartCalc(s, x);
+  if (!r) {
     result.err = 1;
-    result.errors = e.what();
+    result.errors = "StartCalc failed";
     return result;
   }
-  
-  result.result = calc_model.GetData();
 
+  result.result = calc_model.GetData();
   return result;
 }
 

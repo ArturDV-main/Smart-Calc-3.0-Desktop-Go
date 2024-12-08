@@ -30,11 +30,10 @@ func TestAbs(t *testing.T) {
 	if len(got_graph) == 0 {
 		t.Errorf("got = %d; want not 0", len(got_graph))
 	}
-	log.Println(got_graph[0:10])
 }
 
 func TestHistory(t *testing.T) {
-	err := os.Remove("history.txt")
+	err := os.Remove(calcadapter.History)
 	if err != nil && err.Error() != "remove history.txt: no such file or directory" {
 		log.Println("Не удалось удалить файл:", err)
 		return
@@ -49,6 +48,7 @@ func TestHistory(t *testing.T) {
 		t.Errorf("err = %v; want nil", err)
 	}
 	str, err := calcadapter.HistoryRead()
+
 	if len(str) != 2 {
 		t.Errorf("got = %d; want 2 ", len(str))
 	}

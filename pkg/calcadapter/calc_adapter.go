@@ -20,8 +20,8 @@ type Resp struct {
 	Err    error
 }
 
-const history = "../../history.txt"
-const step = 5000
+const History = "../../history.txt"
+const Step = 5000
 
 type TrigonCode rune
 
@@ -55,8 +55,8 @@ func GraphicCalc(str_r string, range_a float64, range_b float64) ([]Point, error
 	if range_b < range_a {
 		range_a, range_b = range_b, range_a
 	}
-	diff := (range_b - range_a) / step
-	var result []Point = make([]Point, step)
+	diff := (range_b - range_a) / Step
+	var result []Point = make([]Point, Step)
 	var wg sync.WaitGroup
 	cstr := C.CString(str)
 	for i := range result {
@@ -131,7 +131,7 @@ func replaceMathFunctions(input string) string {
 }
 
 func HistoryWrite(text string) error {
-	f, err := os.OpenFile(history, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	f, err := os.OpenFile(History, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Println("Unable to open file:", err)
 		return err
@@ -146,7 +146,7 @@ func HistoryWrite(text string) error {
 }
 
 func HistoryRead() ([]string, error) {
-	file, err := os.Open(history)
+	file, err := os.Open(History)
 	if err != nil {
 		log.Println("Unable to open file:", err)
 		return nil, err
@@ -162,7 +162,7 @@ func HistoryRead() ([]string, error) {
 }
 
 func CleanHistory() {
-	err := os.Remove(history)
+	err := os.Remove(History)
 	if err != nil {
 		log.Println("Не удалось удалить файл:", err)
 		return
