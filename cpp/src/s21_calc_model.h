@@ -53,7 +53,7 @@ class CalcModel {
     credit_data_ = {0, 0, 0};
   }
   bool ValidationEqual(const std::string& str) const noexcept;
-  bool StartCalc(const std::string& src_str, double X_num);
+  std::string StartCalc(const std::string& src_str, double X_num);
   void CalcCredit(std::array<double, 3> data);
   void DifferenCalc(std::array<double, 3> data);
   double GetData() const noexcept { return result_; }

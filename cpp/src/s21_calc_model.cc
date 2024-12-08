@@ -7,7 +7,7 @@ CalcModel::CalcModel() {}
 
 CalcModel::~CalcModel() {}
 
-bool CalcModel::StartCalc(const std::string& src_str, double X_num) {
+std::string CalcModel::StartCalc(const std::string& src_str, double X_num) {
   CleanStacks();
   setlocale(LC_NUMERIC, "C");
   if (ValidationEqual(src_str)) {
@@ -15,16 +15,17 @@ bool CalcModel::StartCalc(const std::string& src_str, double X_num) {
       result_ = Calc(src_str, X_num);
       if (std::isnan(result_))
         std::cout << "is nan" << std::endl;
-        return false;
+        return "is nan";
     } catch (const std::exception& e) {
        std::cout << "calc err" << e.what() << std::endl;
-      return false;
+       std::string s(e.what());
+      return "calc err" + s;
     }
   } else {
     std::cout << "calc err: not valid str" << std::endl;
-    return false;
+    return "calc err: not valid str";
   }
-  return true;
+  return "";
 }
 
 void CalcModel::CalcCredit(std::array<double, 3> data) {
