@@ -106,7 +106,7 @@ func Calculate(str_r string, num_x float64) (float64, error) {
 func Calculator(cstr *C.char, num C.double) (float64, error) {
 	c := C.StartCalc(cstr, num)
 	if c.err == 1 {
-		return 0.0, errors.New(C.GoString(cstr))
+		return 0.0, errors.New("cc-error: " + C.GoString(c.errors))
 	}
 	return float64(c.result), nil
 }
@@ -127,7 +127,6 @@ func replaceMathFunctions(input string) string {
 		input = strings.ReplaceAll(input, funcName, string(code))
 	}
 	input = strings.ReplaceAll(input, " ", "")
-
 	return input
 }
 

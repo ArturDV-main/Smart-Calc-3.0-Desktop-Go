@@ -26,7 +26,7 @@ func (a *App) startup(ctx context.Context) {
 func (a *App) Greet(expression string, num_x float64) string {
 	got, err := calcadapter.Calculate(expression, num_x)
 	if err != nil {
-		return fmt.Sprintf("Calculate error:  %s", err.Error())
+		return fmt.Sprintf("Calculate error:  %s", fmt.Sprintln(err.Error()))
 	}
 	return fmt.Sprintln("Got: ", got)
 }
@@ -41,7 +41,7 @@ func (a *App) GraphicCalc(expression string, range_a float64, range_b float64) G
 	got, err := calcadapter.GraphicCalc(expression, range_a, range_b)
 	var data GraphData
 	if err != nil {
-
+		data.Points = []calcadapter.Point{{X: 0, Y: 0}}
 		return data
 	}
 	if len(got) > 0 {

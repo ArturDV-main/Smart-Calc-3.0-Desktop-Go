@@ -32,9 +32,9 @@ class CalcModel {
   enum ForItog { itog = 0, pereplata, monthly };
 
   typedef struct Resp {
-    int err;
-    const char* errors;
-    double result;
+    int err{};
+    const char* errors{};
+    double result{};
   } Response;
 
   struct StackType {
@@ -64,8 +64,8 @@ class CalcModel {
   std::stack<StackType> oper_stack_{};
   std::stack<double> num_stack_{};
   double result_{};
-  std::array<double, 3> credit_data_;
-  std::vector<double> different_data_;
+  std::array<double, 3> credit_data_{};
+  std::vector<double> different_data_{};
   //  Metods
   double Calc(const std::string& calc_src, double X_num);
   StackType ParserUno(const std::string& calc_src, int* position, double X_num);

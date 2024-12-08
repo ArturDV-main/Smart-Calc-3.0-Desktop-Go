@@ -5,13 +5,13 @@
 extern "C" {
 #endif
 
-  typedef struct Resp{
+  struct Resp{
     int err;
     const char* errors;
     double result;
-  } Response;
+  };
 
-  Response StartCalc(const char* a, const double x);
+  struct Resp StartCalc(const char* a, const double x);
 
 #ifdef __cplusplus
 }
