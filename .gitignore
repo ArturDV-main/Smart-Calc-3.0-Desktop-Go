@@ -7,3 +7,5 @@ libsmart_calc.dylib
 pkg/calcadapter/libsmart_calc.so
 libsmart_calc.so
 examples
+smart_calc.dll
+history.txt
