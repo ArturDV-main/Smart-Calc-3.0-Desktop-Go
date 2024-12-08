@@ -30,6 +30,14 @@ func TestAbs(t *testing.T) {
 	if len(got_graph) == 0 {
 		t.Errorf("got = %d; want not 0", len(got_graph))
 	}
+	str = "atan(x)"
+
+	for i := 1; i < 5; i++ {
+		_, err = calcadapter.Calculate(str, 2)
+		if err != nil {
+			t.Errorf("atan calc err: %f ", err)
+		}
+	}
 }
 
 func TestHistory(t *testing.T) {

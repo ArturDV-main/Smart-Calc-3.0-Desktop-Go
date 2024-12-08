@@ -1,4 +1,5 @@
 #include "./s21_calc_model.h"
+#include  <iostream>
 
 namespace s21 {
 
@@ -13,11 +14,14 @@ bool CalcModel::StartCalc(const std::string& src_str, double X_num) {
     try {
       result_ = Calc(src_str, X_num);
       if (std::isnan(result_))
+        std::cout << "is nan" << std::endl;
         return false;
     } catch (const std::exception& e) {
+       std::cout << "calc err" << e.what() << std::endl;
       return false;
     }
   } else {
+    std::cout << "calc err: not valid str" << std::endl;
     return false;
   }
   return true;
@@ -273,41 +277,41 @@ double CalcModel::TrigonCalc(double x, char operation) {
   double buf_num = 0.0;
   switch (operation) {
     case COS:
-      buf_num = cos(x);
+      buf_num = std::cos(x);
       break;
     case SIN:
-      buf_num = sin(x);
+      buf_num = std::sin(x);
       break;
     case TAN:
-      buf_num = tan(x);
+      buf_num = std::tan(x);
       break;
     case ACOS:
       if (x < -1 || x > 1)
         PushError("error: interval [-1,+1]");
-      buf_num = acos(x);
+      buf_num = std::acos(x);
       break;
     case ASIN:
       if (x < -1 || x > 1)
         PushError("error: interval [-1,+1]");
-      buf_num = asin(x);
+      buf_num = std::asin(x);
       break;
     case ATAN:
-      buf_num = atan(x);
+      buf_num = std::atan(x);
       break;
     case SQRT:
       if (x < -1 || x > 1)
         PushError("error: interval > 1");
-      buf_num = sqrt(x);
+      buf_num = std::sqrt(x);
       break;
     case LN:
       if (x < 1)
         PushError("error: interval > 1");
-      buf_num = log(x);
+      buf_num = std::log(x);
       break;
     case LOG:
       if (x < 1)
         PushError("error: interval > 1");
-      buf_num = log10(x);
+      buf_num = std::log10(x);
       break;
   }
   return buf_num;
