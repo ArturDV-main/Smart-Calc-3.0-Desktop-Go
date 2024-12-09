@@ -21,7 +21,7 @@ type Resp struct {
 }
 
 const History = "../../history.txt"
-const Step = 30000
+const Step = 3000
 
 type TrigonCode rune
 
@@ -58,11 +58,11 @@ func GraphicCalc(str_r string, range_a float64, range_b float64) ([]Point, error
 	diff := (range_b - range_a) / Step
 	var result []Point = make([]Point, Step)
 	var wg sync.WaitGroup
-	cstr := C.CString(str)
+
 	for i := range result {
 		wg.Add(1)
 		x := range_a + float64(i)*diff
-		go Calc(&wg, cstr, C.double(x), &result[i].Y)
+		go Calc(&wg, str, C.double(x), &result[i].Y)
 		result[i].X = x
 	}
 	wg.Wait()
@@ -70,7 +70,8 @@ func GraphicCalc(str_r string, range_a float64, range_b float64) ([]Point, error
 	return result, nil
 }
 
-func Calc(wg *sync.WaitGroup, cstr *C.char, num C.double, val *float64) {
+func Calc(wg *sync.WaitGroup, str_r string, num C.double, val *float64) {
+	cstr := C.CString(str_r)
 	if wg == nil {
 		log.Println("wg is nil")
 

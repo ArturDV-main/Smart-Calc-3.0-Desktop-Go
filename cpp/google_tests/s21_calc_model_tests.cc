@@ -18,10 +18,16 @@ TEST(CalcTest, SimpleCalc) {
   EXPECT_EQ(a.GetData(), 1);
   a.StartCalc("C(1)-B(1)+E(1)", 0);
   EXPECT_DOUBLE_EQ(a.GetData(), -0.77200956125745379);
-  a.StartCalc("2^2+X", 0);
+  a.StartCalc("2^2+x", 0);
   EXPECT_DOUBLE_EQ(a.GetData(), 4);
   a.StartCalc("H100+G2.7182818284", 0);
   EXPECT_DOUBLE_EQ(a.GetData(), 2.9999999999782783);
+}
+
+TEST(CalcTest, TrigoneCalc) {
+  s21::CalcModel a;
+  a.StartCalc("E(x)", 2);
+  EXPECT_DOUBLE_EQ(a.GetData(), 1.1071487177940904);
 }
 
 TEST(CalcTest, ResetCalc) {

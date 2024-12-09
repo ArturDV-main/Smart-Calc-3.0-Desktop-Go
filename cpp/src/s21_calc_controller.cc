@@ -13,7 +13,7 @@ struct Resp StartCalc(const char* a, const double x) {
   result.err = 0;
   result.errors = NULL;
   result.result = 0.0;
-  std::string r = calc_model.StartCalc(s, x);
+  std::string r = calc_model.Calculating(s, x);
   if (r != "") {
     result.err = 1;
     result.errors = r.c_str();
