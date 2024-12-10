@@ -12,7 +12,6 @@ import (
 	"log"
 	"os"
 	"strings"
-	"sync"
 )
 
 type Resp struct {
@@ -45,8 +44,8 @@ type Point struct {
 func GraphicCalc(str_r string, range_a float64, range_b float64) ([]Point, error) {
 	_, err := Calculate(str_r, range_a)
 	if err != nil {
-
-		return nil, err
+		var result []Point
+		return result, err
 	}
 	str := replaceMathFunctions(str_r)
 	if range_a == range_b {
@@ -57,46 +56,23 @@ func GraphicCalc(str_r string, range_a float64, range_b float64) ([]Point, error
 	}
 	diff := (range_b - range_a) / Step
 	var result []Point = make([]Point, Step)
-	var wg sync.WaitGroup
 
 	for i := range result {
-		wg.Add(1)
 		x := range_a + float64(i)*diff
-		go Calc(&wg, str, C.double(x), &result[i].Y)
 		result[i].X = x
+		calc_y, err := Calculator(str, x)
+		if err != nil {
+			return nil, err
+		}
+		result[i].Y = calc_y
 	}
-	wg.Wait()
 
 	return result, nil
 }
 
-func Calc(wg *sync.WaitGroup, str_r string, num C.double, val *float64) {
-	cstr := C.CString(str_r)
-	if wg == nil {
-		log.Println("wg is nil")
-
-		return
-	}
-	defer wg.Done()
-	if val == nil {
-		log.Println("val is nil")
-
-		return
-	}
-	result, err := Calculator(cstr, num)
-	if err != nil {
-		log.Println(err)
-
-		return
-	}
-	*val = float64(result)
-}
-
 func Calculate(str_r string, num_x float64) (float64, error) {
 	str := replaceMathFunctions(str_r)
-	cstr := C.CString(str)
-	num := C.double(num_x)
-	c, err := Calculator(cstr, num)
+	c, err := Calculator(str, num_x)
 	if err != nil {
 		return 0.0, err
 	}
@@ -104,22 +80,25 @@ func Calculate(str_r string, num_x float64) (float64, error) {
 	return c, nil
 }
 
-func Calculator(cstr *C.char, num C.double) (float64, error) {
+func Calculator(str string, x float64) (float64, error) {
+	num := C.double(x)
+	cstr := C.CString(str)
 	c := C.StartCalc(cstr, num)
-	if c.err == 1 {
+	if c.err == 5 {
 		return 0.0, errors.New("cc-error: " + C.GoString(c.errors))
 	}
-	return float64(c.result), nil
+	result := float64(c.result)
+	return result, nil
 }
 
 func replaceMathFunctions(input string) string {
 	replacements := map[string]TrigonCode{
-		"cos":  COS,
-		"sin":  SIN,
-		"tan":  TAN,
 		"acos": ACOS,
 		"asin": ASIN,
 		"atan": ATAN,
+		"cos":  COS,
+		"sin":  SIN,
+		"tan":  TAN,
 		"sqrt": SQRT,
 		"ln":   LN,
 		"log":  LOG,

@@ -31,11 +31,40 @@ func TestAbs(t *testing.T) {
 		t.Errorf("got = %d; want not 0", len(got_graph))
 	}
 	str = "atan(x)"
-
-	for i := 1; i < 5; i++ {
+	for i := 1; i < 3000; i++ {
 		_, err = calcadapter.Calculate(str, 2)
 		if err != nil {
 			t.Errorf("atan calc err: %f ", err)
+		}
+	}
+	str = "tan(x)"
+	for i := 1; i < 10000; i++ {
+		r, err := calcadapter.Calculate(str, 2)
+		if err != nil {
+			t.Errorf("atan calc err: %f ", err)
+		}
+		if r+2.185040 > 0.00001 {
+			t.Errorf("atan calc want: -2.185040, got: %f ", r)
+		}
+	}
+	str = "sin(x)"
+	for i := 1; i < 10000; i++ {
+		r, err := calcadapter.Calculate(str, 3.1415)
+		if err != nil {
+			t.Errorf("atan calc err: %f ", err)
+		}
+		if r-0.000093 > 0.000001 {
+			t.Errorf("atan calc want: -0.000093, got: %f ", r)
+		}
+	}
+	str = "sin(x)"
+	for i := 1; i < 10000; i++ {
+		r, err := calcadapter.Calculate(str, 3.1416)
+		if err != nil {
+			t.Errorf("atan calc err: %f ", err)
+		}
+		if r != 0.000001 {
+			t.Errorf("atan calc want: -0.000093, got: %f ", r)
 		}
 	}
 }
@@ -43,7 +72,7 @@ func TestAbs(t *testing.T) {
 func TestHistory(t *testing.T) {
 	err := os.Remove(calcadapter.History)
 	if err != nil && err.Error() != "remove history.txt: no such file or directory" {
-		log.Println("Не удалось удалить файл:", err)
+		log.Println("не удалось удалить файл:", err)
 		return
 	}
 	err = calcadapter.HistoryWrite("5+5*2")

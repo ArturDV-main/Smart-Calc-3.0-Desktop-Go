@@ -15,7 +15,7 @@ struct Resp StartCalc(const char* a, const double x) {
   result.result = 0.0;
   std::string r = calc_model.Calculating(s, x);
   if (r != "") {
-    result.err = 1;
+    result.err = 5;
     result.errors = r.c_str();
     return result;
   }
