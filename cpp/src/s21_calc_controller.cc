@@ -1,6 +1,8 @@
 #include "./s21_calc_controller.h"
 #include "./s21_calc_model.h"
-#include <iostream>
+#include <stdlib.h>
+#include <string>
+#include <stdio.h>
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,7 +19,14 @@ Response StartCalc(const char* a, const double x) {
 
   if (r != "") {
     result.err = 1;
-    result.errors = "from cc error: ";
+    std::string err = result.errors;
+    size_t length = err.length() + 1;
+    char * destination = (char *)malloc(length);
+    if(destination == nullptr) {
+      result.errors = nullptr;
+       return result;
+    }
+    strcpy();
     return result;
   }
 
