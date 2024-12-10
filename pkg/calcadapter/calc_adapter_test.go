@@ -73,9 +73,21 @@ func TestAbs(t *testing.T) {
 		if err != nil {
 			t.Errorf("atan calc err: %f ", err)
 		}
-		if r+0.000007 > 0.000001 {
-			t.Errorf("atan calc want: -0.000093, got: %f ", r)
+		if r-1.560797 > 0.000001 {
+			t.Errorf("atan calc want: 1.560797, got: %f ", r)
 		}
+	}
+	got_graph, err = calcadapter.GraphicCalc("atan(x)", -10, 10)
+	if err != nil {
+		t.Errorf("err = %v; want != nil", err)
+	}
+	if got_graph[0].X != -10 {
+		t.Errorf("got = %f; want != -10", got_graph[0].X)
+	}
+
+	_, err = calcadapter.Calculate("kavabanga", -10)
+	if err == nil {
+		t.Errorf("err = %v; want != nil", err)
 	}
 }
 

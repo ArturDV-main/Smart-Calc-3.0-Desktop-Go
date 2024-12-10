@@ -12,6 +12,8 @@ endif
 app:
 	wails build -tags webkit2_41
 
+gotest:
+	cd ./pkg/calcadapter && go test
 
 test:
 	cd ./cpp && make

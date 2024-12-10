@@ -6,17 +6,18 @@
 extern "C" {
 #endif
 
-struct Resp StartCalc(const char* a, const double x) {
+Response StartCalc(const char* a, const double x) {
   s21::CalcModel calc_model;
   std::string s(a);
-  struct Resp result;
+  Response result;
   result.err = 0;
-  result.errors = NULL;
+  result.errors = nullptr;
   result.result = 0.0;
   std::string r = calc_model.Calculating(s, x);
+
   if (r != "") {
-    result.err = 5;
-    result.errors = r.c_str();
+    result.err = 1;
+    result.errors = "from cc error: ";
     return result;
   }
 

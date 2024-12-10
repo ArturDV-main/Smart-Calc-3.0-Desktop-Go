@@ -84,8 +84,11 @@ func Calculator(str string, x float64) (float64, error) {
 	num := C.double(x)
 	cstr := C.CString(str)
 	c := C.StartCalc(cstr, num)
-	if c.err == 5 {
-		return 0.0, errors.New("cc-error: " + C.GoString(c.errors))
+	if c.err == 1 {
+		log.Println("calculator error ")
+		// er := c.errors
+		// tmp := C.GoString(er)
+		return 0.0, errors.New("cc-error: ")
 	}
 	result := float64(c.result)
 	return result, nil
