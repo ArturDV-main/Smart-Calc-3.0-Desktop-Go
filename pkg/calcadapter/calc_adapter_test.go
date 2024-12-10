@@ -120,3 +120,12 @@ func TestHistory(t *testing.T) {
 		t.Errorf("err = %v; want not nil", err)
 	}
 }
+
+func TestUno(t *testing.T) {
+	for i := 0; i < 1000; i++ {
+		_, err := calcadapter.Calculate("kavabanga", -10)
+		if err == nil {
+			t.Errorf("err = %v; want != nil", err)
+		}
+	}
+}

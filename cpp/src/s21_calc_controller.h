@@ -5,11 +5,6 @@
 extern "C" {
 #endif
 
-typedef struct Response {
-  int err;
-  const char* errors;
-  double result;
-} Response;
 
 struct Resp {
   int err;
@@ -17,7 +12,7 @@ struct Resp {
   double result;
 };
 
-Response StartCalc(const char* a, const double x);
+struct Resp StartCalc(const char* a, const double x);
 
 #ifdef __cplusplus
 }
