@@ -2,7 +2,7 @@ package calcadapter
 
 /*
    #cgo CXXFLAGS: -std=c++17
-   #cgo LDFLAGS: -L. -lsmart_calc
+   #cgo LDFLAGS: -L. -lsmart_calc -static-libstdc++ -static-libgcc
    #include "../../cpp/src/s21_calc_controller.h"
 */
 import "C"
