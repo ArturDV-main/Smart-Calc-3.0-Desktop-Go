@@ -96,6 +96,8 @@ func replaceMathFunctions(input string) string {
 		"acos": ACOS,
 		"asin": ASIN,
 		"atan": ATAN,
+	}
+	replacements2 := map[string]TrigonCode{
 		"cos":  COS,
 		"sin":  SIN,
 		"tan":  TAN,
@@ -106,6 +108,9 @@ func replaceMathFunctions(input string) string {
 	for funcName, code := range replacements {
 		input = strings.ReplaceAll(input, funcName, string(code))
 	}
+	for funcName, code := range replacements2 {
+		input = strings.ReplaceAll(input, funcName, string(code))
+	}
 	input = strings.ReplaceAll(input, " ", "")
 	return input
 }
@@ -113,13 +118,13 @@ func replaceMathFunctions(input string) string {
 func HistoryWrite(text string) error {
 	f, err := os.OpenFile(History, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
-		log.Println("Unable to open file:", err)
+		log.Println("unable to open file:", err)
 		return err
 	}
 	defer f.Close()
 	_, err = f.WriteString(text + "\n")
 	if err != nil {
-		log.Println("Unable to write file:", err)
+		log.Println("unable to write file:", err)
 		return err
 	}
 	return nil
@@ -128,7 +133,7 @@ func HistoryWrite(text string) error {
 func HistoryRead() ([]string, error) {
 	file, err := os.Open(History)
 	if err != nil {
-		log.Println("Unable to open file:", err)
+		log.Println("unable to open file:", err)
 		return nil, err
 	}
 	defer file.Close()
@@ -144,7 +149,7 @@ func HistoryRead() ([]string, error) {
 func CleanHistory() {
 	err := os.Remove(History)
 	if err != nil {
-		log.Println("Не удалось удалить файл:", err)
+		log.Println("unable to delete file: ", err)
 		return
 	}
 }

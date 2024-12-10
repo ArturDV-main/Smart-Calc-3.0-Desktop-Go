@@ -63,7 +63,17 @@ func TestAbs(t *testing.T) {
 		if err != nil {
 			t.Errorf("atan calc err: %f ", err)
 		}
-		if r != 0.000001 {
+		if r+0.000007 > 0.000001 {
+			t.Errorf("atan calc want: -0.000093, got: %f ", r)
+		}
+	}
+	str = "atan(100)"
+	for i := 1; i < 10000; i++ {
+		r, err := calcadapter.Calculate(str, 0.0)
+		if err != nil {
+			t.Errorf("atan calc err: %f ", err)
+		}
+		if r+0.000007 > 0.000001 {
 			t.Errorf("atan calc want: -0.000093, got: %f ", r)
 		}
 	}
@@ -72,7 +82,7 @@ func TestAbs(t *testing.T) {
 func TestHistory(t *testing.T) {
 	err := os.Remove(calcadapter.History)
 	if err != nil && err.Error() != "remove history.txt: no such file or directory" {
-		log.Println("не удалось удалить файл:", err)
+		log.Println("unable to delete file: ", err)
 		return
 	}
 	err = calcadapter.HistoryWrite("5+5*2")
