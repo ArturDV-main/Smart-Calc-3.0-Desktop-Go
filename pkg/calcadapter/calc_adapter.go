@@ -11,6 +11,7 @@ import (
 	"errors"
 	"log"
 	"os"
+	"slices"
 	"strings"
 )
 
@@ -121,15 +122,36 @@ func replaceMathFunctions(input string) string {
 }
 
 func HistoryWrite(text string) error {
+	HistoryRead()
 	f, err := os.OpenFile(History, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		log.Println("unable to open file:", err)
 		return err
 	}
 	defer f.Close()
+	st, _ := f.Stat()
+	if st.Size() > 1 {
+		history_tmp, err := HistoryRead()
+		if err != nil {
+			return err
+		}
+		_, err = f.Write([]byte{})
+		if err != nil {
+			return err
+		}
+		for i := len(history_tmp) - 1; i >= 0; i-- {
+			_, err = f.WriteString(history_tmp[i] + "\n")
+			if err != nil {
+				log.Println("unable to write file:", err)
+
+				return err
+			}
+		}
+	}
 	_, err = f.WriteString(text + "\n")
 	if err != nil {
 		log.Println("unable to write file:", err)
+
 		return err
 	}
 	return nil
@@ -147,6 +169,10 @@ func HistoryRead() ([]string, error) {
 	for scanner.Scan() {
 		l := scanner.Text()
 		line = append(line, l)
+	}
+	slices.Reverse(line)
+	if len(line) > 5 {
+		line = line[:5]
 	}
 	return line, nil
 }
