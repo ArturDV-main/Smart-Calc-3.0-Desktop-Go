@@ -19,7 +19,7 @@ type Resp struct {
 	Err    error
 }
 
-const History = "../../history.txt"
+const History = "./history.txt"
 const Step = 3000
 
 type TrigonCode rune
@@ -85,11 +85,10 @@ func Calculator(str string, x float64) (float64, error) {
 	cstr := C.CString(str)
 	c := C.StartCalc(cstr, num)
 	e := c.err
-	log.Println(e)
 	if e == 1 {
 		var tmp string
 		if c.errors != nil {
-			tmp = C.GoStringN(cstr, 5)
+			tmp = C.GoString(c.errors)
 		}
 		return 0.0, errors.New("cc-error: " + tmp)
 	}

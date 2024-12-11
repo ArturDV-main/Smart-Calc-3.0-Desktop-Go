@@ -1,7 +1,7 @@
 #include "./s21_calc_controller.h"
-#include "./s21_calc_model.h"
 #include <stdlib.h>
 #include <cstring>
+#include "./s21_calc_model.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -16,8 +16,13 @@ struct Resp StartCalc(const char* a, const double x) {
   std::string r = calc_model.Calculating(s, x);
   result.err = 0;
   if (r != "") {
+    char* copy = (char*)malloc((r.length() + 1) * sizeof(char));
+    if (copy == NULL) {
+      return result;
+    }
+    strcpy(copy, r.c_str());
     result.err = 1;
-    result.errors = NULL;
+    result.errors = copy;
     return result;
   }
   result.err = 0;
