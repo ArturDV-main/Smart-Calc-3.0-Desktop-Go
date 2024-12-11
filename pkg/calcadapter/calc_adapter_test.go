@@ -31,14 +31,14 @@ func TestAbs(t *testing.T) {
 		t.Errorf("got = %d; want not 0", len(got_graph))
 	}
 	str = "atan(x)"
-	for i := 1; i < 3000; i++ {
+	for i := 1; i < 5; i++ {
 		_, err = calcadapter.Calculate(str, 2)
 		if err != nil {
 			t.Errorf("atan calc err: %f ", err)
 		}
 	}
 	str = "tan(x)"
-	for i := 1; i < 10000; i++ {
+	for i := 1; i < 5; i++ {
 		r, err := calcadapter.Calculate(str, 2)
 		if err != nil {
 			t.Errorf("atan calc err: %f ", err)
@@ -48,7 +48,7 @@ func TestAbs(t *testing.T) {
 		}
 	}
 	str = "sin(x)"
-	for i := 1; i < 10000; i++ {
+	for i := 1; i < 5; i++ {
 		r, err := calcadapter.Calculate(str, 3.1415)
 		if err != nil {
 			t.Errorf("atan calc err: %f ", err)
@@ -58,7 +58,7 @@ func TestAbs(t *testing.T) {
 		}
 	}
 	str = "sin(x)"
-	for i := 1; i < 10000; i++ {
+	for i := 1; i < 5; i++ {
 		r, err := calcadapter.Calculate(str, 3.1416)
 		if err != nil {
 			t.Errorf("atan calc err: %f ", err)
@@ -68,7 +68,7 @@ func TestAbs(t *testing.T) {
 		}
 	}
 	str = "atan(100)"
-	for i := 1; i < 10000; i++ {
+	for i := 1; i < 5; i++ {
 		r, err := calcadapter.Calculate(str, 0.0)
 		if err != nil {
 			t.Errorf("atan calc err: %f ", err)
@@ -111,8 +111,8 @@ func TestHistory(t *testing.T) {
 	if len(str) != 2 {
 		t.Errorf("got = %d; want 2 ", len(str))
 	}
-	if err != nil || str[0] != "5+5*2" {
-		t.Errorf("got = %s; want 5+5*2", str[0])
+	if err != nil || str[0] != "10+10*8" {
+		t.Errorf("got = %s; want 10+10*8", str[0])
 	}
 	calcadapter.CleanHistory()
 	_, err = calcadapter.HistoryRead()

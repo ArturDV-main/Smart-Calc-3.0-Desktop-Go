@@ -22,6 +22,8 @@ type Resp struct {
 
 const History = "./history.txt"
 const Step = 3000
+const MaxHistoryStore = 35
+const MaxHistory = 25
 
 type TrigonCode rune
 
@@ -122,25 +124,36 @@ func replaceMathFunctions(input string) string {
 }
 
 func HistoryWrite(text string) error {
-	HistoryRead()
-	f, err := os.OpenFile(History, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
+	file, err := os.OpenFile(History, os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
 		log.Println("unable to open file:", err)
 		return err
 	}
-	defer f.Close()
-	st, _ := f.Stat()
-	if st.Size() > 1 {
+	defer file.Close()
+	scanner := bufio.NewScanner(file)
+	count := 0
+	for scanner.Scan() {
+		count++
+	}
+	log.Println(count)
+	if count > MaxHistoryStore {
 		history_tmp, err := HistoryRead()
 		if err != nil {
+
 			return err
 		}
-		_, err = f.Write([]byte{})
+		err = file.Truncate(0)
 		if err != nil {
+
+			return err
+		}
+		_, err = file.Seek(0, 0)
+		if err != nil {
+
 			return err
 		}
 		for i := len(history_tmp) - 1; i >= 0; i-- {
-			_, err = f.WriteString(history_tmp[i] + "\n")
+			_, err = file.WriteString(history_tmp[i] + "\n")
 			if err != nil {
 				log.Println("unable to write file:", err)
 
@@ -148,7 +161,7 @@ func HistoryWrite(text string) error {
 			}
 		}
 	}
-	_, err = f.WriteString(text + "\n")
+	_, err = file.WriteString(text + "\n")
 	if err != nil {
 		log.Println("unable to write file:", err)
 
@@ -171,8 +184,8 @@ func HistoryRead() ([]string, error) {
 		line = append(line, l)
 	}
 	slices.Reverse(line)
-	if len(line) > 5 {
-		line = line[:5]
+	if len(line) > MaxHistory {
+		line = line[:MaxHistory]
 	}
 	return line, nil
 }
