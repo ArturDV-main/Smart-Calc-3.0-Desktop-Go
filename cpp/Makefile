@@ -29,12 +29,12 @@ lib:
 	mkdir -p $(BUILD_DIR)
 ifeq ($(OS), Darwin)
 	cp ./src/* $(BUILD_DIR)
-	cd $(BUILD_DIR) && g++ -std=c++17 -dynamiclib -fPIC -o libsmart_calc.dylib ./*.cc
+	cd $(BUILD_DIR) && g++ -static-libstdc++ -static-libgcc --static -lstdc++ -lpthread -dynamiclib -fPIC -o libsmart_calc.dylib ./*.cc
 	cd $(BUILD_DIR) && cp ./libsmart_calc.dylib ../
 	cd $(BUILD_DIR) && cp ./libsmart_calc.dylib ../pkg/calcadapter/
 else
 	cp ./src/* $(BUILD_DIR)
-	cd $(BUILD_DIR) && g++ -std=c++17 -shared -fPIC -o libsmart_calc.so ./*.cc
+	cd $(BUILD_DIR) && g++ -static-libstdc++ -static-libgcc -lstdc++ -lpthread -shared -fPIC -o libsmart_calc.so ./*.cc
 	cd $(BUILD_DIR) && cp ./libsmart_calc.so ../
 	cd $(BUILD_DIR) && cp ./libsmart_calc.so ../pkg/calcadapter/
 endif
