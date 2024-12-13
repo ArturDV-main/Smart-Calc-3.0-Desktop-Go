@@ -31,6 +31,29 @@
     /* Maintain aspect ratio */
 }
 
+.help {
+    position: fixed;
+    top: 12px;
+    right: 12px;
+    border-radius: 3px;
+    border: none;
+    background: none;
+    padding: 8px;
+    cursor: pointer;
+    display: flex;
+}
+
+.help:hover {
+    color: #333333;
+    background-color: rgba(255, 255, 255, .3);
+}
+
+.help-container {
+    position: fixed;
+    inset: 0;
+    background-color: #1b2636;
+}
+
 .result {
     height: 20px;
     line-height: 20px;
@@ -46,6 +69,10 @@
     justify-content: center;
     max-width: 500px;
     margin: auto;
+}
+
+article {
+    padding: 4rem 2rem 2rem;
 }
 
 label {
