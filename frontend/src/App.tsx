@@ -146,7 +146,7 @@ export const App: React.FC = () => {
                     </label>
                 </div>
                 <div className='graph-container'>
-                    <Graph data={graphData} rangeA={rangeA.current} rangeB={rangeB.current} rangeY_A={rangeY_A.current} rangeY_B={rangeY_B.current} />
+                    <Graph data={graphData} rangeA={rangeA.current} rangeB={rangeB.current} />
                 </div>
             </div>
         </div>

@@ -6,11 +6,9 @@ interface GraphProps {
     data?: main.GraphData
     rangeA: number
     rangeB: number
-    rangeY_A: number
-    rangeY_B: number
 }
 
-export const Graph: React.FC<GraphProps> = ({ data, rangeA, rangeB, rangeY_A, rangeY_B}) => {
+export const Graph: React.FC<GraphProps> = ({ data, rangeA, rangeB}) => {
     const svgRef = useRef<SVGSVGElement>(null)
     const width = 1000
     const height = 600
