@@ -10,6 +10,7 @@ import (
 	"bufio"
 	"errors"
 	"log"
+	"math"
 	"os"
 	"slices"
 	"strings"
@@ -44,28 +45,45 @@ type Point struct {
 	Y float64 `json:"y"`
 }
 
-func GraphicCalc(str_r string, range_a float64, range_b float64) ([]Point, error) {
-	_, err := Calculate(str_r, range_a)
+type GraphSrc struct {
+	Str_r         string
+	Range_a       float64
+	Range_b       float64
+	Value_range_a float64
+	Value_range_b float64
+}
+
+func GraphicCalc(data GraphSrc) ([]Point, error) {
+	_, err := Calculate(data.Str_r, data.Range_a)
 	if err != nil {
 		var result []Point
 		return result, err
 	}
-	str := replaceMathFunctions(str_r)
-	if range_a == range_b {
-		return nil, errors.New("range_a = range_b")
+	str := replaceMathFunctions(data.Str_r)
+	if data.Range_a == data.Range_b || data.Value_range_a == data.Value_range_b {
+		return nil, errors.New("range_a = range_b or value_range_a == value_range_b")
 	}
-	if range_b < range_a {
-		range_a, range_b = range_b, range_a
+	if data.Range_b < data.Range_a {
+		data.Range_a, data.Range_b = data.Range_b, data.Range_a
 	}
-	diff := (range_b - range_a) / Step
+	if data.Value_range_a < data.Value_range_b {
+		data.Value_range_a, data.Value_range_b = data.Value_range_b, data.Value_range_a
+	}
+	diff := math.Abs(data.Range_b-data.Range_a) / Step
 	var result []Point = make([]Point, Step)
 
 	for i := range result {
-		x := range_a + float64(i)*diff
+		x := data.Range_a + float64(i)*diff
 		result[i].X = x
 		calc_y, err := Calculator(str, x)
 		if err != nil {
 			return nil, err
+		}
+		if calc_y > data.Value_range_a {
+			calc_y = data.Value_range_a
+		}
+		if calc_y < data.Value_range_b {
+			calc_y = data.Value_range_b
 		}
 		result[i].Y = calc_y
 	}
@@ -135,7 +153,6 @@ func HistoryWrite(text string) error {
 	for scanner.Scan() {
 		count++
 	}
-	log.Println(count)
 	if count > MaxHistoryStore {
 		history_tmp, err := HistoryRead()
 		if err != nil {

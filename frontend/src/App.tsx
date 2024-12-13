@@ -13,8 +13,12 @@ export const App: React.FC = () => {
     const xInputRef = useRef<HTMLInputElement>(null)
     const aInputRef = useRef<HTMLInputElement>(null)
     const bInputRef = useRef<HTMLInputElement>(null)
+    const a_yInputRef = useRef<HTMLInputElement>(null)
+    const b_yInputRef = useRef<HTMLInputElement>(null)
     const rangeA = useRef<number>(0)
     const rangeB = useRef<number>(0)
+    const rangeY_A = useRef<number>(0)
+    const rangeY_B = useRef<number>(0)
     const [graphData, setGraphData] = useState<main.GraphData>()
     const [historyList, setHistoryList] = useState<string[]>([])
     const [listOpened, setListOpened] = useState(false)
@@ -38,9 +42,10 @@ export const App: React.FC = () => {
         const expression = inpurRef.current.value
         rangeA.current = aInputRef.current ? +aInputRef.current.value : 0
         rangeB.current = bInputRef.current ? +bInputRef.current.value : 0
+        rangeY_A.current = a_yInputRef.current ? +a_yInputRef.current.value : 0
+        rangeY_B.current = b_yInputRef.current ? +b_yInputRef.current.value : 0
 
-        const data = await GraphicCalc(expression, rangeA.current, rangeB.current)
-
+        const data = await GraphicCalc(expression, rangeA.current, rangeB.current, rangeY_A.current, rangeY_B.current)
 
         setGraphData(data)
 
@@ -105,9 +110,9 @@ export const App: React.FC = () => {
                                 className='clear-history'
                                 onClick={() => {
                                     HistoryClean()
-                                    .finally(() => {
-                                        setListOpened(false) 
-                                    })
+                                        .finally(() => {
+                                            setListOpened(false)
+                                        })
                                 }}
                             >
                                 Clear history
@@ -131,9 +136,17 @@ export const App: React.FC = () => {
                         <input id="xval" className="inputx" ref={bInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} />
                     </label>
                     <button className="btn" onClick={handleGraphClick}>Graph</button>
+                    <label>
+                        <span>Range Y A</span>
+                        <input id="xval" className="inputx" ref={a_yInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} />
+                    </label>
+                    <label>
+                        <span>Range Y B</span>
+                        <input id="xval" className="inputx" ref={b_yInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} />
+                    </label>
                 </div>
                 <div className='graph-container'>
-                    <Graph data={graphData} rangeA={rangeA.current} rangeB={rangeB.current} />
+                    <Graph data={graphData} rangeA={rangeA.current} rangeB={rangeB.current} rangeY_A={rangeY_A.current} rangeY_B={rangeY_B.current} />
                 </div>
             </div>
         </div>

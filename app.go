@@ -37,8 +37,8 @@ type GraphData struct {
 	MinY   float64             `json:"minY"`
 }
 
-func (a *App) GraphicCalc(expression string, range_a float64, range_b float64) GraphData {
-	got, err := calcadapter.GraphicCalc(expression, range_a, range_b)
+func (a *App) GraphicCalc(expression string, range_a float64, range_b float64, value_range_a float64, value_range_b float64) GraphData {
+	got, err := calcadapter.GraphicCalc(calcadapter.GraphSrc{Str_r: expression, Range_a: range_a, Range_b: range_b, Value_range_a: value_range_a, Value_range_b: value_range_b})
 	var data GraphData
 	if err != nil {
 		data.Points = []calcadapter.Point{{X: 0, Y: 0}}

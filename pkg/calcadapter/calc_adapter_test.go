@@ -23,7 +23,7 @@ func TestAbs(t *testing.T) {
 	if err != nil || got != -5 {
 		t.Errorf("5-5*2 = %f; want 0 ", got)
 	}
-	got_graph, err := calcadapter.GraphicCalc("sin ( x )", -10, 10)
+	got_graph, err := calcadapter.GraphicCalc(calcadapter.GraphSrc{"sin(x)", -10, 10, 1500, -1500})
 	if err != nil {
 		t.Errorf("err = %v; want nil", err)
 	}
@@ -77,7 +77,7 @@ func TestAbs(t *testing.T) {
 			t.Errorf("atan calc want: 1.560797, got: %f ", r)
 		}
 	}
-	got_graph, err = calcadapter.GraphicCalc("atan(x)", -10, 10)
+	got_graph, err = calcadapter.GraphicCalc(calcadapter.GraphSrc{Str_r: "atan(x)", Range_a: -10, Range_b: 10, Value_range_a: 1500, Value_range_b: -1500})
 	if err != nil {
 		t.Errorf("err = %v; want != nil", err)
 	}
