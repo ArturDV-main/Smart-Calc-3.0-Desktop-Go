@@ -10,6 +10,7 @@ else
 endif
 
 app:
+	cp ./appicon.png ./build
 	wails build -tags webkit2_41
 
 gotest:

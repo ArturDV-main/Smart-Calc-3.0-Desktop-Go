@@ -19,7 +19,7 @@ func main() {
 	err := wails.Run(&options.App{
 		Title:     "smartcalc",
 		Width:     920,
-		Height:    920,
+		Height:    950,
 		Frameless: false,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
@@ -30,7 +30,7 @@ func main() {
 			app,
 		},
 		MinWidth:  800,
-		MinHeight: 600,
+		MinHeight: 950,
 	})
 
 	if err != nil {

@@ -29,7 +29,7 @@ lib:
 	mkdir -p $(BUILD_DIR)
 ifeq ($(OS), Darwin)
 	cp ./src/* $(BUILD_DIR)
-	cd $(BUILD_DIR) && g++ -static-libstdc++ -static-libgcc --static -lstdc++ -lpthread -dynamiclib -fPIC -o libsmart_calc.dylib ./*.cc
+	cd $(BUILD_DIR) && g++ -static-libstdc++ -static-libgcc -lstdc++ -lpthread -dynamiclib -fPIC -o libsmart_calc.dylib ./*.cc
 	cd $(BUILD_DIR) && cp ./libsmart_calc.dylib ../
 	cd $(BUILD_DIR) && cp ./libsmart_calc.dylib ../pkg/calcadapter/
 else

@@ -140,20 +140,20 @@ export const App: React.FC = () => {
                     <div className='graph-input'>
                         <label>
                             <span>Range A</span>
-                            <input id="xval" className="inputx" ref={aInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} />
+                            <input id="xval" className="inputx" ref={aInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} defaultValue={-17}/>
                         </label>
                         <label>
                             <span>Range B</span>
-                            <input id="xval" className="inputx" ref={bInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} />
+                            <input id="xval" className="inputx" ref={bInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} defaultValue={17}/>
                         </label>
                         <button className="btn" onClick={handleGraphClick}>Graph</button>
                         <label>
                             <span>Range Y A</span>
-                            <input id="xval" className="inputx" ref={a_yInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} />
+                            <input id="xval" className="inputx" ref={a_yInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} defaultValue={15}/>
                         </label>
                         <label>
                             <span>Range Y B</span>
-                            <input id="xval" className="inputx" ref={b_yInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} />
+                            <input id="xval" className="inputx" ref={b_yInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} defaultValue={-15}/>
                         </label>
                     </div>
                     <div className='graph-container'>

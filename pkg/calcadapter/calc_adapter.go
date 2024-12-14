@@ -109,7 +109,7 @@ func Calculator(str string, x float64) (float64, error) {
 	if e == 1 {
 		var tmp string
 		if c.errors != nil {
-			tmp = C.GoString(c.errors)
+			tmp = C.GoString(cstr)
 		}
 		return 0.0, errors.New("cc-error: " + tmp)
 	}
