@@ -21,6 +21,7 @@ dvi:
 	cd cpp && make dvi
 
 # lib app
+# otool -L ./MyApp.app/Contents/MacOS/MyApp
 dist: 
 ifeq ($(OS), Darwin)
 	rm -rf archive_smart_calc_3_0
@@ -50,6 +51,7 @@ ifeq ($(OS), Darwin)
 else
 	wails build -tags webkit2_41
 endif
+	sh ./apptool.sh
 
 tests: lib
 	cd ./pkg/calcadapter && go test
