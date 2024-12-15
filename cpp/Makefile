@@ -25,6 +25,8 @@ OS := $(shell uname -s)
 .PHONY: clean
 all: lib
 
+# -Wl,-install_name,@rpath/libsmart_calc.dylib
+
 lib:
 	mkdir -p $(BUILD_DIR)
 ifeq ($(OS), Darwin)
