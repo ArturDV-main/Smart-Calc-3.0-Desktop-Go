@@ -4,7 +4,7 @@ OS := $(shell uname -s)
 all: lib app open
 
 pkg:
-	pkgbuild --root ./build/my.pkg/smartcalc.app --identifier com.yourcompany.myapp --version 1.0 My.pkg
+	pkgbuild --root ./build/bin/smartcalc.app --identifier com.yourcompany.myapp --version 1.0 Smartcalc.pkg
 
 open:
 ifeq ($(OS), Darwin)
@@ -52,6 +52,7 @@ else
 	wails build -tags webkit2_41
 endif
 	sh ./apptool.sh
+	make pkg
 
 tests: lib
 	cd ./pkg/calcadapter && go test
