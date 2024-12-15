@@ -12,6 +12,7 @@ import (
 	"log"
 	"math"
 	"os"
+	"path/filepath"
 	"slices"
 	"strings"
 )
@@ -21,10 +22,19 @@ type Resp struct {
 	Err    error
 }
 
-const History = "./history.txt"
+const History = "history.txt"
 const Step = 3000
 const MaxHistoryStore = 35
 const MaxHistory = 25
+
+func Story(h string) string {
+	homeDir, err := os.UserHomeDir()
+	if err != nil {
+		log.Fatal(err)
+	}
+	historyFilePath := filepath.Join(homeDir, h)
+	return historyFilePath
+}
 
 type TrigonCode rune
 
@@ -142,7 +152,7 @@ func replaceMathFunctions(input string) string {
 }
 
 func HistoryWrite(text string) error {
-	file, err := os.OpenFile(History, os.O_RDWR|os.O_CREATE, 0644)
+	file, err := os.OpenFile(Story(History), os.O_RDWR|os.O_CREATE, 0644)
 	if err != nil {
 		log.Println("unable to open file:", err)
 		return err
@@ -188,7 +198,7 @@ func HistoryWrite(text string) error {
 }
 
 func HistoryRead() ([]string, error) {
-	file, err := os.Open(History)
+	file, err := os.Open(Story(History))
 	if err != nil {
 		log.Println("unable to open file:", err)
 		return nil, err
@@ -208,7 +218,7 @@ func HistoryRead() ([]string, error) {
 }
 
 func CleanHistory() {
-	err := os.Remove(History)
+	err := os.Remove(Story(History))
 	if err != nil {
 		log.Println("unable to delete file: ", err)
 		return
