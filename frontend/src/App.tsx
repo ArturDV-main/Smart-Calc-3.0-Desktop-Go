@@ -139,20 +139,20 @@ export const App: React.FC = () => {
                     <h2>Wave Graph</h2>
                     <div className='graph-input'>
                         <label>
-                            <span>Range A</span>
+                            <span> Range X from </span>
                             <input id="xval" className="inputx" ref={aInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} defaultValue={-17}/>
                         </label>
                         <label>
-                            <span>Range B</span>
+                            <span> to </span>
                             <input id="xval" className="inputx" ref={bInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} defaultValue={17}/>
                         </label>
                         <button className="btn" onClick={handleGraphClick}>Graph</button>
                         <label>
-                            <span>Range Y A</span>
+                            <span>Range Y from </span>
                             <input id="xval" className="inputx" ref={a_yInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} defaultValue={15}/>
                         </label>
                         <label>
-                            <span>Range Y B</span>
+                            <span>Range Y to </span>
                             <input id="xval" className="inputx" ref={b_yInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} defaultValue={-15}/>
                         </label>
                     </div>
@@ -174,7 +174,11 @@ export const App: React.FC = () => {
                         </svg>
                     </button>
                     <article>
-                        Умный калькулятор... Давишь кнопки, жмёшь равно...
+                        <br>Умный калькулятор 3.0.</br>
+                        <br>Необходимо ввести выражение в поле и кликнусь Calc = ,
+                        результат будет выведен над полем ввода выражения.</br>
+                        <br>Для построения графика, введите выражение в поле для расчета, введите оласти зачений и область определений для графика, используйте кнопку Graph.</br>
+                        <br>Если была допущена ошибка или выражение не имеет решений, будет выведена ошибка, график так же не будет построен.</br>
                     </article>
                 </div>}
         </>
