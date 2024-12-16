@@ -9,5 +9,5 @@ Copy-Item ./build/smart_calc.dll ./
 Copy-Item ./build/smart_calc.dll ./pkg/calcadapter/
 Copy-Item ./appicon.png ./build
 Copy-Item ./icon.ico ./build
-wails build
+wails build -nsis
 ./build/bin/smartcalc.exe
