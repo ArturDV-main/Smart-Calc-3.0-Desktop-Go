@@ -152,7 +152,7 @@ export const App: React.FC = () => {
                             <input id="xval" className="inputx" ref={a_yInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} defaultValue={15}/>
                         </label>
                         <label>
-                            <span>Range Y to </span>
+                            <span> to </span>
                             <input id="xval" className="inputx" ref={b_yInputRef} max="1000000" min="-1000000" type="number" onKeyDown={handleInput} defaultValue={-15}/>
                         </label>
                     </div>
