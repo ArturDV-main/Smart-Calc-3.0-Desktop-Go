@@ -48,11 +48,11 @@ app:
 	cp ./appicon.png ./build
 ifeq ($(OS), Darwin)
 	wails build
+	sh ./apptool.sh
+	make pkg
 else
 	wails build -tags webkit2_41
 endif
-	sh ./apptool.sh
-	make pkg
 
 tests: lib
 	cd ./pkg/calcadapter && go test
@@ -66,3 +66,12 @@ lib:
 
 dev:
 	wails dev -tags webkit2_41
+
+deb:
+	mkdir -p build/smartcalc/DEBIAN
+	mkdir -p build/smartcalc/usr/bin
+	mkdir -p build/smartcalc/usr/lib
+	cp control build/smartcalc/DEBIAN
+	cp build/bin/smartcalc build/smartcalc/usr/bin/
+	cp build/libsmart_calc.so build/smartcalc/usr/lib/
+	dpkg-deb --build build/smartcalc

@@ -1,0 +1,8 @@
+Package: smartcalc
+Version: 1.0
+Section: utils
+Priority: optional
+Architecture: amd64
+Depends: libc6 (>= 2.28)
+Maintainer: leftrana <leftrana@student.21-school.ru>
+Description: app with din lib
