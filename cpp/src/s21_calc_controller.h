@@ -5,7 +5,6 @@
 extern "C" {
 #endif
 
-
 struct Resp {
   int err;
   const char* errors;

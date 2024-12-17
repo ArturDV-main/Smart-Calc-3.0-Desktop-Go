@@ -23,7 +23,7 @@ dvi:
 # File /oname=$INSTDIR\smart_calc.dll "smart_calc.dll"
 # lib app
 # otool -L ./MyApp.app/Contents/MacOS/MyApp
-dist: 
+dist: lib app
 ifeq ($(OS), Darwin)
 	rm -rf archive_smart_calc_3_0
 	mkdir -p archive_smart_calc_3_0
