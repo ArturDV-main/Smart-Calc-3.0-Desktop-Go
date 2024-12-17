@@ -21,6 +21,7 @@ dvi:
 	cd cpp && make dvi
 
 # File /oname=$INSTDIR\smart_calc.dll "smart_calc.dll"
+# SectionEnd
 # lib app
 # otool -L ./MyApp.app/Contents/MacOS/MyApp
 dist: lib app
