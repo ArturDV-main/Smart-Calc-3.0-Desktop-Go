@@ -39,6 +39,7 @@ else
 	cd $(BUILD_DIR) && g++ -static-libstdc++ -static-libgcc -lstdc++ -lpthread -shared -fPIC -o libsmart_calc.so ./*.cc
 	cd $(BUILD_DIR) && cp ./libsmart_calc.so ../
 	cd $(BUILD_DIR) && cp ./libsmart_calc.so ../pkg/calcadapter/
+	cd $(BUILD_DIR) && sudo cp ./libsmart_calc.so /usr/lib/
 endif
 
 clean:
